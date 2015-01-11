@@ -135,9 +135,6 @@ public class WatergateControl : MonoBehaviour {
 			}
 		}
 		return true;
-//		RaycastHit2D hit = Physics2D.Linecast(pos + dir, pos);
-//		bool ret =  (hit.collider == player.collider2D);
-//		return ret;
 	}
 
 	void SetDestination(string playerName, Vector2 dir) {
