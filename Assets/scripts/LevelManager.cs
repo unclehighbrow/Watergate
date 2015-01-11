@@ -2,4 +2,5 @@
 using System.Collections;
 
 public class LevelManager : Singleton<LevelManager> {
+
 }
