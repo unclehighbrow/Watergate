@@ -40,7 +40,9 @@
 -define:UNITY_EDITOR
 -define:UNITY_EDITOR_OSX
 'Assets/scripts/Burglar.cs'
+'Assets/scripts/LevelManager.cs'
 'Assets/scripts/Player.cs'
+'Assets/scripts/Singelton.cs'
 'Assets/scripts/WatergateControl.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Xml.Linq.dll'

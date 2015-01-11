@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{C17C3BBF-2C4D-3EB3-6A4D-DFAB98038B3C}</ProjectGuid>
+	<ProjectGuid>{506673BF-FE99-5717-9D2D-314C54DF4279}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<AssemblyName>Assembly-Boo</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
 	<BaseDirectory>Assets</BaseDirectory>
@@ -46,11 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\scripts\Burglar.cs" />
-     <Compile Include="Assets\scripts\LevelManager.cs" />
-     <Compile Include="Assets\scripts\Player.cs" />
-     <Compile Include="Assets\scripts\Singelton.cs" />
-     <Compile Include="Assets\scripts\WatergateControl.cs" />
+     <Compile Include="Assets\scripts\NewBehaviourScript.boo" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

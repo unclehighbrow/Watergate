@@ -18,7 +18,9 @@ public class Player : MonoBehaviour {
 			Destroy(col.gameObject);
 		} else if (col.gameObject.tag == "power_pellet") {
 			Destroy(col.gameObject);
+		} else if (col.gameObject.tag == "burglar") {
+			Debug.Log ("foudn burglar");
+			// Destroy(this.gameObject);
 		}
-
 	}
 }
