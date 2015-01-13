@@ -10,12 +10,10 @@ public class Player : MonoBehaviour {
 	public Vector2 startPosition = Vector2.zero;
 
 
-	// Use this for initialization
 	void Start () {
 		startPosition = transform.position;
 	}
 	
-	// Update is called once per frame
 	void FixedUpdate () {
 		if (LevelManager.Instance.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination

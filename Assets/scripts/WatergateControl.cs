@@ -3,19 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class WatergateControl : MonoBehaviour {
-	Dictionary<string,Player> players = new Dictionary<string,Player>();
-
 	Hashtable touchMap = new Hashtable();
 	Vector3 firstMousePosition;
-
-	string p1 = "p1";
-	string p2 = "p2";
-
-	void Start () {
-		players.Add(p1,GameObject.Find(p1).GetComponent<Player>());
-		players.Add(p2,GameObject.Find(p2).GetComponent<Player>());
-	}
-
 
 	void Update () {		
 		// mouse
@@ -48,11 +37,11 @@ public class WatergateControl : MonoBehaviour {
 		Player player = null;
 
 
-		foreach (KeyValuePair<string, Player> playerPair in players) {
-			float distance = Mathf.Abs(Vector3.Distance(playerPair.Value.transform.position, worldStart));
+		foreach (Player iPlayer in LevelManager.Instance.players) {
+			float distance = Mathf.Abs(Vector3.Distance(iPlayer.transform.position, worldStart));
 			if (smallestDistance == -1 || distance < smallestDistance) {
 				smallestDistance = distance;
-				player = playerPair.Value;
+				player = iPlayer;
 			}
 		}
 		

@@ -8,13 +8,10 @@ public class Burglar : MonoBehaviour {
 	public Vector2 direction = Vector2.zero;
 	public float speed = .03f;
 	public int intelligence = 5;
-	List<GameObject> players = new List<GameObject>();
 	public Vector2 startPosition = Vector2.zero;
 	public Color color;
 
 	void Start () {
-		players.Add(GameObject.Find("p1"));
-		players.Add(GameObject.Find("p2"));
 		startPosition = transform.position;
 		GetComponent<SpriteRenderer>().color = color;
 	}
@@ -28,8 +25,8 @@ public class Burglar : MonoBehaviour {
 				rigidbody2D.MovePosition(p);
 			} else {
 				float smallestDistance = -1;
-				GameObject playerToFollow = null;
-				foreach (GameObject player in players) {
+				Player playerToFollow = null;
+				foreach (Player player in LevelManager.Instance.players) {
 					float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
 					if (smallestDistance == -1 || distance < smallestDistance) {
 						smallestDistance = distance;
