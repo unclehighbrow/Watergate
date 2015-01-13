@@ -16,6 +16,7 @@ public class WatergateControl : MonoBehaviour {
 		players.Add(p2,GameObject.Find(p2).GetComponent<Player>());
 	}
 
+
 	void Update () {		
 		// mouse
 		if (Input.GetMouseButtonDown(0)) {
@@ -41,6 +42,7 @@ public class WatergateControl : MonoBehaviour {
 	}
 
 	void performMove(Vector3 start, Vector3 end) {
+		LevelManager.Instance.levelStarted = true;
 		Vector3 worldStart = Camera.main.ScreenToWorldPoint(start);
 		float smallestDistance = -1;
 		Player player = null;
@@ -75,9 +77,9 @@ public class WatergateControl : MonoBehaviour {
 			if (direction == -player.direction) { // quick turn
 				player.destination = (destination + direction);
 				player.direction = direction;
-			} else if (destination != Vector2.zero && (Vector2)player.transform.position != destination) {
+			} else if (destination != Vector2.zero && (Vector2)player.transform.position != destination) { // usual
 				player.preference = direction;
-			} else {
+			} else { // if you happen to end the swipe right on a destinatio
 				player.SetDestination(direction);
 			}
 		}

@@ -7,28 +7,31 @@ public class Player : MonoBehaviour {
 	public Vector2 direction = Vector2.zero;
 	public Vector2 destination = Vector2.zero;
 	public Vector2 preference = Vector2.zero;
+	public Vector2 startPosition = Vector2.zero;
 
 
 	// Use this for initialization
 	void Start () {
-	
+		startPosition = transform.position;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
-			Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
-			rigidbody2D.MovePosition(p);
-		} else if (destination.x > 5 || destination.x < -5) { // warp tunnel
-			destination = new Vector2(-destination.x, destination.y);
-			transform.position = new Vector2(-transform.position.x, transform.position.y);
-		} else { // make choice
-			if (valid(preference)) {
-				SetDestination(preference);
-				preference = Vector2.zero;
-			} else if (valid(direction)) {
-				SetDestination(direction);
-			} 
+		if (LevelManager.Instance.levelStarted) {
+			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
+				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
+				rigidbody2D.MovePosition(p);
+			} else if (destination.x > 5 || destination.x < -5) { // warp tunnel
+				destination = new Vector2(-destination.x, destination.y);
+				transform.position = new Vector2(-transform.position.x, transform.position.y);
+			} else { // make choice
+				if (valid(preference)) {
+					SetDestination(preference);
+					preference = Vector2.zero;
+				} else if (valid(direction)) {
+					SetDestination(direction);
+				} 
+			}
 		}
 	}
 
@@ -57,10 +60,14 @@ public class Player : MonoBehaviour {
 		if (col.gameObject.tag == "pellet") {
 			Destroy(col.gameObject);
 		} else if (col.gameObject.tag == "power_pellet") {
+			LevelManager.Instance.StartScareMode();
 			Destroy(col.gameObject);
 		} else if (col.gameObject.tag == "burglar") {
-			Debug.Log ("foudn burglar");
-			// Destroy(this.gameObject);
+			if (LevelManager.Instance.scareMode)  {
+				Destroy(col.gameObject);
+			} else {
+				LevelManager.Instance.Die();
+			}
 		}
 	}
 }
