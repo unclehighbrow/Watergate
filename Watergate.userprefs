@@ -1,12 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/WatergateControl.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/Player.cs">
     <Files>
-      <File FileName="Assets/scripts/WatergateControl.cs" Line="62" Column="36" />
-      <File FileName="Assets/scripts/LevelManager.cs" Line="50" Column="36" />
-      <File FileName="Assets/scripts/Player.cs" Line="20" Column="41" />
-      <File FileName="Assets/scripts/Burglar.cs" Line="8" Column="9" />
-      <File FileName="Assets/scripts/Singelton.cs" Line="53" Column="1" />
+      <File FileName="Assets/scripts/WatergateControl.cs" Line="44" Column="22" />
+      <File FileName="Assets/scripts/LevelManager.cs" Line="22" Column="1" />
+      <File FileName="Assets/scripts/Player.cs" Line="26" Column="6" />
+      <File FileName="Assets/scripts/Burglar.cs" Line="32" Column="35" />
+      <File FileName="Assets/scripts/Singelton.cs" Line="17" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

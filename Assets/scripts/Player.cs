@@ -19,10 +19,12 @@ public class Player : MonoBehaviour {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
 				rigidbody2D.MovePosition(p);
-			} else if (destination.x > 5 || destination.x < -5) { // warp tunnel
-				destination = new Vector2(-destination.x, destination.y);
-				transform.position = new Vector2(-transform.position.x, transform.position.y);
-			} else { // make choice
+			} 
+//			else if (destination.x > 5 || destination.x < -5) { // warp tunnel
+//				destination = new Vector2(-destination.x, destination.y);
+//				transform.position = new Vector2(-transform.position.x, transform.position.y);
+//			} 
+			else { // make choice
 				if (valid(preference)) {
 					SetDestination(preference);
 					preference = Vector2.zero;
