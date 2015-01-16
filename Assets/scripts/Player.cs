@@ -15,7 +15,7 @@ public class Player : MonoBehaviour {
 		startPosition = transform.position;
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
 	}
-	
+
 	void FixedUpdate () {
 		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
@@ -65,10 +65,13 @@ public class Player : MonoBehaviour {
 			levelManager.StartScareMode();
 			Destroy(col.gameObject);
 		} else if (col.gameObject.tag == "burglar") {
-			if (levelManager.scareMode)  {
-				Destroy(col.gameObject);
-			} else {
-				levelManager.Die();
+			Burglar burglar = col.gameObject.GetComponent<Burglar>();
+			if (!burglar.dead) {
+				if (levelManager.scareMode)  {
+					burglar.Die();
+				} else {
+					levelManager.Die();
+				}
 			}
 		}
 	}

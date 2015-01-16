@@ -7,12 +7,15 @@ public class Burglar : MonoBehaviour {
 	public Vector2 destination = Vector2.zero;
 	public Vector2 direction = Vector2.zero;
 	public float speed = .03f;
+	public float scareModeSpeedMultiplier = .6f;
+	public float deadSpeedMultiplier = 5f;
 	public int intelligence = 5;
 	public Vector2 startPosition = Vector2.zero;
 	public Color color;
 	public List<Transform> waypoints;
-	bool turnedForScareMode = false;
 	public LevelManager levelManager;
+	public bool dead = false;
+	int waypointCounter = 0;
 
 	void Start () {
 		startPosition = transform.position;
@@ -20,38 +23,83 @@ public class Burglar : MonoBehaviour {
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
 	}
 	
+	public void StartScareMode() {
+		GetComponent<SpriteRenderer>().color = Color.blue;
+		direction = -direction;
+		destination = (destination + direction);
+		speed *= scareModeSpeedMultiplier;
+	}
+	
+	public void EndScareMode() {
+		if (!dead) {
+			GetComponent<SpriteRenderer>().color = color;
+			speed /= scareModeSpeedMultiplier;
+		}
+	}
+
+	public void Die() {
+		dead = true;
+		EndScareMode();
+		speed *= deadSpeedMultiplier;
+		GetComponent<SpriteRenderer>().color = Color.black;
+		waypointCounter = waypoints.Count - 1;
+	}
+
+	public void Undie() {
+		speed /= deadSpeedMultiplier;
+		GetComponent<SpriteRenderer>().color = color;
+		dead = false;
+	}
+	
 	void FixedUpdate () {
 		if (levelManager.levelStarted) {
 			bool scareMode = levelManager.scareMode;
 
-			if (!turnedForScareMode && scareMode) {
-				direction = -direction;
-				destination = (destination + direction);
-				turnedForScareMode = true;
-			} else if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
-				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * (scareMode?.6f:1f));
+			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
+				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
 				rigidbody2D.MovePosition(p);
 			} else {
-				if (waypoints.Count > 0) {
-					Transform waypoint = waypoints[0];
+				if (waypoints.Count > waypointCounter && !dead) { // at start, follow waypoints out of the box
+					Transform waypoint = waypoints[waypointCounter];
 					if (waypoint.position == transform.position) {
-						waypoints.Remove(waypoint);
+						waypointCounter += 1;
 					} else {
 						direction = waypoint.position - transform.position; // this would make a big vector if more than one space
 						destination = waypoint.position;
 					}
+				} else if (dead && ((Vector2)transform.position == startPosition)) {
+					Undie();
 				} else {
-					float smallestDistance = -1;
-					Player playerToFollow = null;
-					foreach (Player player in levelManager.players) {
-						float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
-						if (smallestDistance == -1 || distance < smallestDistance) {
-							smallestDistance = distance;
-							playerToFollow = player;
+					Vector2 finalDestination = Vector2.zero; 
+					if (dead) {
+						Debug.Log ("dead, finding last waypoint");
+						Transform waypoint = waypoints[waypointCounter];
+						Debug.Log ("counter: " + waypointCounter + ", " + waypoint);
+						if (waypoint.position == transform.position) {
+							if (waypointCounter > 0) {
+								waypointCounter -= 1;
+							} else {
+								finalDestination = startPosition;
+							}
+						} else {
+							finalDestination = waypoint.position;
+
 						}
+					} else {
+						float smallestDistance = -1;
+						Player playerToFollow = null;
+						foreach (Player player in levelManager.players) {
+							float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
+							if (smallestDistance == -1 || distance < smallestDistance) {
+								smallestDistance = distance;
+								playerToFollow = player;
+							}
+						}
+						finalDestination = playerToFollow.transform.position;
 					}
-					if (playerToFollow != null) {
-						Vector2 vectorToPlayer = playerToFollow.transform.position - transform.position;
+
+					if (finalDestination != Vector2.zero) {
+						Vector2 vectorToPlayer = finalDestination - (Vector2)transform.position;
 						Vector2 primaryDirection = Vector2.zero;
 						Vector2 secondaryDirection = Vector2.zero;
 						Vector2 xDirection = vectorToPlayer.x > 0 ? Vector2.right : -Vector2.right;
@@ -65,15 +113,14 @@ public class Burglar : MonoBehaviour {
 							secondaryDirection = xDirection;
 						}
 
-						if (scareMode) {
+						if (scareMode && !dead) {
 							primaryDirection = -primaryDirection;
 							secondaryDirection = -secondaryDirection;
 						}
 
-
-						if (valid (primaryDirection) && Random.Range(1,10) <= intelligence && primaryDirection != -direction) {
+						if (valid (primaryDirection) && (Random.Range(1,10) <= intelligence || dead) && primaryDirection != -direction) {
 							actualDirection = primaryDirection;
-						} else if (valid(secondaryDirection) && Random.Range(1,10) <= intelligence && secondaryDirection != -direction) {
+						} else if (valid(secondaryDirection) && (Random.Range(1,10) <= intelligence || dead) && secondaryDirection != -direction) {
 							actualDirection = secondaryDirection;
 						} else if (valid(direction)) {
 							actualDirection = direction;
@@ -102,7 +149,7 @@ public class Burglar : MonoBehaviour {
 		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.6f);
 		for (int i = 0; i < hits.Length; i++) {
 			if (hits[i].transform.gameObject.tag == "wall" ||
-			    (hits[i].transform.gameObject.tag == "invisible_wall" && waypoints.Count == 0)) { 
+			    (hits[i].transform.gameObject.tag == "invisible_wall" && waypoints.Count < waypointCounter + 1)) { 
 				// you can only go through invisible wall if you're going through your waypoints
 				return false;
 			}

@@ -41,14 +41,14 @@ public class LevelManager : MonoBehaviour{
 		scareMode = true;
 		timer = timerStart;
 		foreach (Burglar burglar in burglars) {
-			burglar.GetComponent<SpriteRenderer>().color = Color.blue;
+			burglar.StartScareMode();
 		}
 	}
 
 	void EndScareMode() {
 		scareMode = false;
 		foreach (Burglar burglar in burglars) {
-			burglar.GetComponent<SpriteRenderer>().color = Color.white;
+			burglar.EndScareMode();
 		}
 	}
 
