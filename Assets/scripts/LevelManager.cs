@@ -58,10 +58,7 @@ public class LevelManager : MonoBehaviour{
 			burglar.Reset();
 		}
 		foreach (Player player in players) {
-			player.transform.position = player.startPosition;
-			player.destination = Vector2.zero;
-			player.preference = Vector2.zero;
-			player.direction = Vector2.zero;
+			player.Reset();
 		}
 
 	}

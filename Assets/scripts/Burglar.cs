@@ -2,25 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Burglar : MonoBehaviour {
-
-	public Vector2 destination = Vector2.zero;
-	public Vector2 direction = Vector2.zero;
-	public float speed = .03f;
+public class Burglar : Person {
 	public float scareModeSpeedMultiplier = .6f;
 	public float deadSpeedMultiplier = 5f;
 	public int intelligence = 5;
-	public Vector2 startPosition = Vector2.zero;
 	public Color color;
 	public List<Transform> waypoints;
-	public LevelManager levelManager;
 	public bool dead = false;
 	public int waypointCounter = 0;
 
-	void Start () {
-		startPosition = transform.position;
+	public new void Start () {
+		base.Start();
 		GetComponent<SpriteRenderer>().color = color;
-		levelManager = GameObject.FindObjectOfType<LevelManager>();
 	}
 
 	public void Reset() {
@@ -78,9 +71,7 @@ public class Burglar : MonoBehaviour {
 				} else {
 					Vector2 finalDestination = Vector2.zero; 
 					if (dead) {
-						Debug.Log ("dead, finding last waypoint");
 						Transform waypoint = waypoints[waypointCounter];
-						Debug.Log ("counter: " + waypointCounter + ", " + waypoint);
 						if (waypoint.position == transform.position) {
 							if (waypointCounter > 0) {
 								waypointCounter -= 1;

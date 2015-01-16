@@ -2,31 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Player : MonoBehaviour {
-	public float speed = .05f;
-	public Vector2 direction = Vector2.zero;
-	public Vector2 destination = Vector2.zero;
+public class Player : Person {
+
 	public Vector2 preference = Vector2.zero;
-	public Vector2 startPosition = Vector2.zero;
-	public LevelManager levelManager;
-
-
-	void Start () {
-		startPosition = transform.position;
-		levelManager = GameObject.FindObjectOfType<LevelManager>();
-	}
 
 	void FixedUpdate () {
 		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
 				rigidbody2D.MovePosition(p);
-			} 
-//			else if (destination.x > 5 || destination.x < -5) { // warp tunnel
-//				destination = new Vector2(-destination.x, destination.y);
-//				transform.position = new Vector2(-transform.position.x, transform.position.y);
-//			} 
-			else { // make choice
+			} else { // make choice
 				if (valid(preference)) {
 					SetDestination(preference);
 					preference = Vector2.zero;
