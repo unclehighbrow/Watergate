@@ -55,8 +55,7 @@ public class LevelManager : MonoBehaviour{
 	public void Die() {
 		levelStarted = false;
 		foreach (Burglar burglar in burglars) {
-			burglar.transform.position = burglar.startPosition;
-			burglar.destination = Vector2.zero;
+			burglar.Reset();
 		}
 		foreach (Player player in players) {
 			player.transform.position = player.startPosition;

@@ -15,12 +15,18 @@ public class Burglar : MonoBehaviour {
 	public List<Transform> waypoints;
 	public LevelManager levelManager;
 	public bool dead = false;
-	int waypointCounter = 0;
+	public int waypointCounter = 0;
 
 	void Start () {
 		startPosition = transform.position;
 		GetComponent<SpriteRenderer>().color = color;
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
+	}
+
+	public void Reset() {
+		transform.position = startPosition;
+		destination = Vector2.zero;
+		waypointCounter = 0;
 	}
 	
 	public void StartScareMode() {

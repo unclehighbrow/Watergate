@@ -44,6 +44,13 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public void Reset() {
+		transform.position = startPosition;
+		destination = Vector2.zero;
+		preference = Vector2.zero;
+		direction = Vector2.zero;
+	}
+
 	bool valid(Vector2 dir) {
 		if (dir == Vector2.zero) {
 			return false;
