@@ -5,6 +5,11 @@ using System.Collections.Generic;
 public class WatergateControl : MonoBehaviour {
 	Hashtable touchMap = new Hashtable();
 	Vector3 firstMousePosition;
+	public LevelManager levelManager;
+
+	void Start() {
+		levelManager = GameObject.FindObjectOfType<LevelManager>();
+	}
 
 	void Update () {		
 		// mouse
@@ -31,13 +36,13 @@ public class WatergateControl : MonoBehaviour {
 	}
 
 	void performMove(Vector3 start, Vector3 end) {
-		LevelManager.Instance.levelStarted = true;
+		levelManager.levelStarted = true;
 		Vector3 worldStart = Camera.main.ScreenToWorldPoint(start);
 		float smallestDistance = -1;
 		Player player = null;
 
 
-		foreach (Player iPlayer in LevelManager.Instance.players) {
+		foreach (Player iPlayer in levelManager.players) {
 			float distance = Mathf.Abs(Vector3.Distance(iPlayer.transform.position, worldStart));
 			if (smallestDistance == -1 || distance < smallestDistance) {
 				smallestDistance = distance;

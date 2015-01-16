@@ -8,14 +8,16 @@ public class Player : MonoBehaviour {
 	public Vector2 destination = Vector2.zero;
 	public Vector2 preference = Vector2.zero;
 	public Vector2 startPosition = Vector2.zero;
+	public LevelManager levelManager;
 
 
 	void Start () {
 		startPosition = transform.position;
+		levelManager = GameObject.FindObjectOfType<LevelManager>();
 	}
 	
 	void FixedUpdate () {
-		if (LevelManager.Instance.levelStarted) {
+		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
 				rigidbody2D.MovePosition(p);
@@ -47,9 +49,9 @@ public class Player : MonoBehaviour {
 			return false;
 		}
 		Vector2 pos = (Vector2)transform.position;
-		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.4f);
+		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.6f);
 		for (int i = 0; i < hits.Length; i++) {
-			if (hits[i].transform.gameObject.tag == "wall") {
+			if (hits[i].transform.gameObject.tag == "wall" || hits[i].transform.gameObject.tag == "invisible_wall") {
 				return false;
 			}
 		}
@@ -60,13 +62,13 @@ public class Player : MonoBehaviour {
 		if (col.gameObject.tag == "pellet") {
 			Destroy(col.gameObject);
 		} else if (col.gameObject.tag == "power_pellet") {
-			LevelManager.Instance.StartScareMode();
+			levelManager.StartScareMode();
 			Destroy(col.gameObject);
 		} else if (col.gameObject.tag == "burglar") {
-			if (LevelManager.Instance.scareMode)  {
+			if (levelManager.scareMode)  {
 				Destroy(col.gameObject);
 			} else {
-				LevelManager.Instance.Die();
+				levelManager.Die();
 			}
 		}
 	}
