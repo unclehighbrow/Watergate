@@ -14,4 +14,12 @@ public class WarpZone : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	void OnTriggerEnter2D(Collider2D col) {
+		Person person = col.gameObject.GetComponent<Person>();
+		if (person != null) {
+			person.transform.position = (Vector2)outWarpZone.transform.position + person.direction;
+			person.destination = (Vector2)outWarpZone.transform.position + 2*person.direction;
+		}
+	}
 }
