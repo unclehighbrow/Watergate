@@ -60,6 +60,6 @@ public class LevelManager : MonoBehaviour{
 		foreach (Player player in players) {
 			player.Reset();
 		}
-
+		GameSingleton.Instance.lives--;
 	}
 }

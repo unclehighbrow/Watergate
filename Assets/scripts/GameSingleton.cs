@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GameSingleton : Singleton<GameSingleton> {
 	public int score = 0;
+	public int lives = 3;
 
 
 	// Use this for initialization
@@ -15,9 +16,9 @@ public class GameSingleton : Singleton<GameSingleton> {
 	
 	}
 
-	void OnGUI() {
-		//The conversation text
-		GUI.Label(new Rect(10, 30, 50 + 30, 20),
-		          score.ToString());
-	}
+//	void OnGUI() {
+//		//The conversation text
+//		GUI.Label(new Rect(10, 30, 50 + 30, 20),
+//		          score.ToString());
+//	}
 }

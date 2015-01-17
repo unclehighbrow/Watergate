@@ -80,7 +80,6 @@ public class Burglar : Person {
 							}
 						} else {
 							finalDestination = waypoint.position;
-
 						}
 					} else {
 						float smallestDistance = -1;
