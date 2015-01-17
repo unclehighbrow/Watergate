@@ -53,6 +53,7 @@ public class Player : Person {
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.gameObject.tag == "pellet") {
 			Destroy(col.gameObject);
+			GameSingleton.Instance.score += 1;
 		} else if (col.gameObject.tag == "power_pellet") {
 			levelManager.StartScareMode();
 			Destroy(col.gameObject);
@@ -61,6 +62,7 @@ public class Player : Person {
 			if (!burglar.dead) {
 				if (levelManager.scareMode)  {
 					burglar.Die();
+					GameSingleton.Instance.score += 10;
 				} else {
 					levelManager.Die();
 				}
