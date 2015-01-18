@@ -9,7 +9,7 @@ public class Player : Person {
 	void FixedUpdate () {
 		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
-				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
+				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.playerSpeed);
 				rigidbody2D.MovePosition(p);
 			} else { // make choice
 				if (valid(preference)) {
@@ -60,7 +60,7 @@ public class Player : Person {
 		} else if (col.gameObject.tag == "burglar") {
 			Burglar burglar = col.gameObject.GetComponent<Burglar>();
 			if (!burglar.dead) {
-				if (levelManager.scareMode)  {
+				if (burglar.scareMode)  {
 					burglar.Die();
 					GameSingleton.Instance.score += 10;
 				} else {

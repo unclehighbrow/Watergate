@@ -16,18 +16,11 @@ public class LevelManager : MonoBehaviour{
 		pelletHolder = GameObject.Find("pellet_holder");
 		players = new List<Player>(GameObject.FindObjectsOfType<Player>());
 		burglars = new List<Burglar>(GameObject.FindObjectsOfType<Burglar>());
-//		foreach (Player player in players) {
-//			player.levelManager = this;
-//		}
-//		foreach (Burglar burglar in burglars) {
-//			burglar.levelManager = this;
-//		}
-//		GameObject.FindObjectOfType<WatergateControl>().levelManager = this;
      }
 
 	void Update() {
 		if (pelletHolder.transform.childCount == 0) {
-			Application.LoadLevel("maze");
+			GameSingleton.Instance.LoadNextLevel();
 		}
 		if (scareMode) {
 			timer -= Time.deltaTime;

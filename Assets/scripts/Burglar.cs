@@ -10,7 +10,7 @@ public class Burglar : Person {
 	public List<Transform> waypoints;
 	public bool dead = false;
 	public int waypointCounter = 0;
-	bool scareMode = false;
+	public bool scareMode = false;
 
 	public new void Start () {
 		base.Start();
@@ -28,7 +28,7 @@ public class Burglar : Person {
 		direction = -direction;
 		destination = (destination + direction);
 		speed *= scareModeSpeedMultiplier;
-		scareMode = false;
+		scareMode = true;
 	}
 	
 	public void EndScareMode() {
@@ -36,6 +36,7 @@ public class Burglar : Person {
 			GetComponent<SpriteRenderer>().color = color;
 			speed /= scareModeSpeedMultiplier;
 		}
+		scareMode = false;
 	}
 
 	public void Die() {
@@ -56,7 +57,7 @@ public class Burglar : Person {
 		if (levelManager.levelStarted) {
 
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
-				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
+				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.burglarSpeed);
 				rigidbody2D.MovePosition(p);
 			} else {
 				if (waypoints.Count > waypointCounter && !dead) { // at start, follow waypoints out of the box

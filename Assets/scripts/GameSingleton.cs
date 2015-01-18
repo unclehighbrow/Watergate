@@ -4,6 +4,10 @@ using System.Collections;
 public class GameSingleton : Singleton<GameSingleton> {
 	public int score = 0;
 	public int lives = 3;
+	public float playerSpeed = 1f;
+	public float burglarSpeed = 1f;
+	public float playerSpeedMultiplier = 1.1f;
+	public float burglarSpeedMultiplier = 1.2f;
 
 
 	// Use this for initialization
@@ -16,9 +20,13 @@ public class GameSingleton : Singleton<GameSingleton> {
 	
 	}
 
-//	void OnGUI() {
-//		//The conversation text
-//		GUI.Label(new Rect(10, 30, 50 + 30, 20),
-//		          score.ToString());
-//	}
+	public void LoadNextLevel() {
+		if (Application.loadedLevel + 1 >= Application.levelCount) {
+			Application.LoadLevel(0);
+		} else {
+			Application.LoadLevel(Application.loadedLevel + 1);
+		}
+		playerSpeed *= playerSpeedMultiplier;
+		burglarSpeed *= burglarSpeedMultiplier;
+	}
 }
