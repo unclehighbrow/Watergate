@@ -69,4 +69,17 @@ public class Player : Person {
 			}
 		}
 	}
+
+	public void applyDirection(Vector2 newDirection) {
+		levelManager.levelStarted = true;
+		if (newDirection == -this.direction) { // quick turn
+			destination = (destination + newDirection);
+			this.direction = newDirection;
+		} else if (destination != Vector2.zero && (Vector2)transform.position != destination) { // usual
+			preference = newDirection;
+		} else { // if you happen to end the swipe right on a destinatio
+			SetDestination(newDirection);
+		}
+	}
+
 }

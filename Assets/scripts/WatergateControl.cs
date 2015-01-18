@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class WatergateControl : MonoBehaviour {
 	Hashtable touchMap = new Hashtable();
+	Hashtable ignoreTouchMap = new Hashtable();
 	Vector3 firstMousePosition;
 	public LevelManager levelManager;
 
@@ -26,17 +27,39 @@ public class WatergateControl : MonoBehaviour {
 			Touch touch = touches[i];
 			if (touch.phase == TouchPhase.Began) {
 				touchMap[touch.fingerId] = touch;
-			} else if (touch.phase == TouchPhase.Moved) {
+			} else if (touch.phase == TouchPhase.Moved && ignoreTouchMap[touch.fingerId] == null) {
 				if (touchMap.ContainsKey(touch.fingerId)) {
 					Touch firstTouch = (Touch) touchMap[touch.fingerId];
 					performMove(firstTouch.position, touch.position);
+					ignoreTouchMap[touch.fingerId] = 1;
 				}
+			} else if (touch.phase == TouchPhase.Ended) {
+				ignoreTouchMap[touch.fingerId] = null;
 			}
+		}
+
+		if (Input.GetKeyDown("a")) {
+			levelManager.players[0].applyDirection(-Vector2.right);
+		} else if (Input.GetKeyDown("s")) {
+			levelManager.players[0].applyDirection(-Vector2.up);
+		} else if (Input.GetKeyDown("d")) {
+			levelManager.players[0].applyDirection(Vector2.right);
+		} else if (Input.GetKeyDown("w")) {
+			levelManager.players[0].applyDirection(Vector2.up);
+		}
+
+		if (Input.GetKeyDown("j")) {
+			levelManager.players[1].applyDirection(-Vector2.right);
+		} else if (Input.GetKeyDown("k")) {
+			levelManager.players[1].applyDirection(-Vector2.up);
+		} else if (Input.GetKeyDown("l")) {
+			levelManager.players[1].applyDirection(Vector2.right);
+		} else if (Input.GetKeyDown("i")) {
+			levelManager.players[1].applyDirection(Vector2.up);
 		}
 	}
 
 	void performMove(Vector3 start, Vector3 end) {
-		levelManager.levelStarted = true;
 		Vector3 worldStart = Camera.main.ScreenToWorldPoint(start);
 		float smallestDistance = -1;
 		Player player = null;
@@ -67,15 +90,7 @@ public class WatergateControl : MonoBehaviour {
 					direction = -Vector2.up;
 				}
 			}
-			Vector2 destination = player.destination;
-			if (direction == -player.direction) { // quick turn
-				player.destination = (destination + direction);
-				player.direction = direction;
-			} else if (destination != Vector2.zero && (Vector2)player.transform.position != destination) { // usual
-				player.preference = direction;
-			} else { // if you happen to end the swipe right on a destinatio
-				player.SetDestination(direction);
-			}
+			player.applyDirection(direction);
 		}
 	}
 }
