@@ -32,11 +32,11 @@ public class Burglar : Person {
 	}
 	
 	public void EndScareMode() {
-		if (!dead) {
+		if (scareMode) {
 			GetComponent<SpriteRenderer>().color = color;
 			speed /= scareModeSpeedMultiplier;
+			scareMode = false;
 		}
-		scareMode = false;
 	}
 
 	public void Die() {
