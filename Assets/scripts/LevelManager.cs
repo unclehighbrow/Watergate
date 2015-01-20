@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour{
 	float timerStart = 10;
 	public List<Player> players;
 	public List<Burglar> burglars = new List<Burglar>();
+	public int burglarsEatenInScareMode = 0;
 
 
 	void Start() {
@@ -53,6 +54,6 @@ public class LevelManager : MonoBehaviour{
 		foreach (Player player in players) {
 			player.Reset();
 		}
-		GameSingleton.Instance.lives--;
+		GameSingleton.Instance.Die();
 	}
 }
