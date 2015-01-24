@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class WatergateControl : MonoBehaviour {
 	Hashtable touchMap = new Hashtable();
-	Hashtable ignoreTouchMap = new Hashtable();
+	//Hashtable ignoreTouchMap = new Hashtable();
 	Vector3 firstMousePosition;
 	public LevelManager levelManager;
 
@@ -27,14 +27,14 @@ public class WatergateControl : MonoBehaviour {
 			Touch touch = touches[i];
 			if (touch.phase == TouchPhase.Began) {
 				touchMap[touch.fingerId] = touch;
-			} else if (touch.phase == TouchPhase.Moved && ignoreTouchMap[touch.fingerId] == null) {
+			} else if (touch.phase == TouchPhase.Moved) { // && ignoreTouchMap[touch.fingerId] == null) {
 				if (touchMap.ContainsKey(touch.fingerId)) {
 					Touch firstTouch = (Touch) touchMap[touch.fingerId];
 					performMove(firstTouch.position, touch.position);
-					ignoreTouchMap[touch.fingerId] = 1;
+//					ignoreTouchMap[touch.fingerId] = 1;
 				}
-			} else if (touch.phase == TouchPhase.Ended) {
-				ignoreTouchMap[touch.fingerId] = null;
+//			} else if (touch.phase == TouchPhase.Ended) {
+//				ignoreTouchMap[touch.fingerId] = null;
 			}
 		}
 

@@ -10,13 +10,16 @@ public class LevelManager : MonoBehaviour{
 	float timerStart = 10;
 	public List<Player> players;
 	public List<Burglar> burglars = new List<Burglar>();
+	public List<WarpZone> warpZones;
 	public int burglarsEatenInScareMode = 0;
 
 
-	void Start() {
+	void Awake() {
 		pelletHolder = GameObject.Find("pellet_holder");
 		players = new List<Player>(GameObject.FindObjectsOfType<Player>());
+		players.Sort(GameSingleton.SortByName);
 		burglars = new List<Burglar>(GameObject.FindObjectsOfType<Burglar>());
+		warpZones = new List<WarpZone>(GameObject.FindObjectsOfType<WarpZone>());
      }
 
 	void Update() {
