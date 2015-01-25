@@ -72,6 +72,7 @@ public class Player : Person {
 	}
 
 	public void applyDirection(Vector2 newDirection) {
+//		Time.timeScale = 1;
 		levelManager.levelStarted = true;
 		if (newDirection == -this.direction) { // quick turn
 			destination = (destination + newDirection);

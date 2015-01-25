@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour{
 		players.Sort(GameSingleton.SortByName);
 		burglars = new List<Burglar>(GameObject.FindObjectsOfType<Burglar>());
 		warpZones = new List<WarpZone>(GameObject.FindObjectsOfType<WarpZone>());
+		//Time.timeScale = 0;
      }
 
 	void Update() {
