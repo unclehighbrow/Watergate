@@ -49,11 +49,13 @@
      <Compile Include="Assets\scripts\Burglar.cs" />
      <Compile Include="Assets\scripts\CameraController.cs" />
      <Compile Include="Assets\scripts\Flowerpot.cs" />
+     <Compile Include="Assets\scripts\GameOver.cs" />
      <Compile Include="Assets\scripts\GameSingleton.cs" />
      <Compile Include="Assets\scripts\LevelManager.cs" />
      <Compile Include="Assets\scripts\Person.cs" />
      <Compile Include="Assets\scripts\Player.cs" />
      <Compile Include="Assets\scripts\Singelton.cs" />
+     <Compile Include="Assets\scripts\Util.cs" />
      <Compile Include="Assets\scripts\WarpZone.cs" />
      <Compile Include="Assets\scripts\WatergateControl.cs" />
  <Reference Include="UnityEngine.UI">

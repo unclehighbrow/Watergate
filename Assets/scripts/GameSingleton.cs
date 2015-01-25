@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameSingleton : Singleton<GameSingleton> {
 	public int score = 0;
-	public int lives = 5;
+	public int lives = 3;
 	public float playerSpeed = 1f;
 	public float burglarSpeed = 1f;
 	public float playerSpeedMultiplier = 1.1f;
@@ -52,10 +52,12 @@ public class GameSingleton : Singleton<GameSingleton> {
 	}
 
 	public void LoadFirstLevel() {
-		Debug.Log ("lol");
-		lives = 5;
-		foreach (GameObject lifeUi in lifeUis) {
-			lifeUi.GetComponent<Image>().enabled = true;
+		this.lives = 3;
+		this.score = 0;
+		int i = lives;
+		while (i < this.lives) {
+			lifeUis[i].GetComponent<Image>().enabled = true;
+			i++;
 		}
 
 		Application.LoadLevel(0);
