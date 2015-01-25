@@ -35,7 +35,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 	}
 
 	public void LoadNextLevel() {
-		if (Application.loadedLevel + 1 >= Application.levelCount) {
+		if (Application.loadedLevel + 1 >= Application.levelCount - 1) { // -1 for game over, probably -2 for title screen
 			Application.LoadLevel(0);
 		} else {
 			Application.LoadLevel(Application.loadedLevel + 1);
@@ -45,14 +45,19 @@ public class GameSingleton : Singleton<GameSingleton> {
 	}
 
 	public void Die() {
-		lives--;
-//		for (int i = 0; i < lifeUis.Length; i++) {
-//			if (i > lives - 1) {
-//				lifeUis[i].gameObject.SetActive(false);
-//			}
-//		}
-//		if (lives == 0) {
-//
-//		}
+		lifeUis[--lives].GetComponent<Image>().enabled = false;
+		if (lives <= 0) {
+			Application.LoadLevel("game_over");
+		} 
+	}
+
+	public void LoadFirstLevel() {
+		Debug.Log ("lol");
+		lives = 5;
+		foreach (GameObject lifeUi in lifeUis) {
+			lifeUi.GetComponent<Image>().enabled = true;
+		}
+
+		Application.LoadLevel(0);
 	}
 }
