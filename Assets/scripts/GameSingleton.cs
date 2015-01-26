@@ -23,7 +23,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 
 	public void LoadNextLevel() {
 		if (Application.loadedLevel + 1 >= Application.levelCount - 1) { // -1 for game over, probably -2 for title screen
-			Application.LoadLevel(0);
+			Application.LoadLevel(1);
 		} else {
 			Application.LoadLevel(Application.loadedLevel + 1);
 		}
@@ -40,6 +40,6 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public void LoadFirstLevel() {
 		this.lives = 3;
 		this.score = 0;
-		Application.LoadLevel(0);
+		Application.LoadLevel(1);
 	}
 }
