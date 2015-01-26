@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour{
 	GameObject pelletHolder = null;
@@ -12,26 +13,46 @@ public class LevelManager : MonoBehaviour{
 	public List<Burglar> burglars = new List<Burglar>();
 	public List<WarpZone> warpZones;
 	public int burglarsEatenInScareMode = 0;
+	public Text scoreUi;
+	public List<GameObject> lifeUis;
+	CanvasGroup pausePanel;
 
+	public void Pause() {
+		Debug.Log ("pause");
+		Time.timeScale = 0;
+		pausePanel.alpha = 1;
+	}
+
+	public void Resume() {
+		Debug.Log ("resume");
+		pausePanel.alpha = 0;
+		Time.timeScale = 1;
+	}
 
 	void Awake() {
 		pelletHolder = GameObject.Find("pellet_holder");
 		players = new List<Player>(GameObject.FindObjectsOfType<Player>());
-		players.Sort(GameSingleton.SortByName);
+		players.Sort(Util.SortByName);
 		burglars = new List<Burglar>(GameObject.FindObjectsOfType<Burglar>());
 		warpZones = new List<WarpZone>(GameObject.FindObjectsOfType<WarpZone>());
-		//Time.timeScale = 0;
+		scoreUi = GameObject.Find ("score").GetComponent<Text>();
+		lifeUis = new List<GameObject>(GameObject.FindGameObjectsWithTag("life"));
+		lifeUis.Sort(Util.SortByName);
+		pausePanel = GameObject.Find("pause_panel").GetComponent<CanvasGroup>(); 
      }
 
 	void Update() {
-		if (pelletHolder.transform.childCount == 0) {
-			GameSingleton.Instance.LoadNextLevel();
-		}
-		if (scareMode) {
-			timer -= Time.deltaTime;
-			if (timer <= 0) {
-				EndScareMode();
+		if (levelStarted) {
+			if (pelletHolder.transform.childCount == 0) {
+				GameSingleton.Instance.LoadNextLevel();
 			}
+			if (scareMode) {
+				timer -= Time.deltaTime;
+				if (timer <= 0) {
+					EndScareMode();
+				}
+			}
+			scoreUi.text = GameSingleton.Instance.score.ToString().PadLeft(5, '0');
 		}
 	}
 
@@ -58,6 +79,8 @@ public class LevelManager : MonoBehaviour{
 		foreach (Player player in players) {
 			player.Reset();
 		}
+		GameSingleton.Instance.lives--;
+		lifeUis[GameSingleton.Instance.lives].GetComponent<Image>().enabled = false;
 		GameSingleton.Instance.Die();
 	}
 }
