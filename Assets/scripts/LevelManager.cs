@@ -18,13 +18,11 @@ public class LevelManager : MonoBehaviour{
 	CanvasGroup pausePanel;
 
 	public void Pause() {
-		Debug.Log ("pause");
 		Time.timeScale = 0;
 		pausePanel.alpha = 1;
 	}
 
 	public void Resume() {
-		Debug.Log ("resume");
 		pausePanel.alpha = 0;
 		Time.timeScale = 1;
 	}
@@ -39,6 +37,8 @@ public class LevelManager : MonoBehaviour{
 		lifeUis = new List<GameObject>(GameObject.FindGameObjectsWithTag("life"));
 		lifeUis.Sort(Util.SortByName);
 		pausePanel = GameObject.Find("pause_panel").GetComponent<CanvasGroup>(); 
+		GameObject.Find("resume_button").GetComponent<Button>().onClick.AddListener(()=>Resume());
+		GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
      }
 
 	void Update() {
