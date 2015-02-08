@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Player : Person {
 
 	public Vector2 preference = Vector2.zero;
+	public bool deepThroat = false;
 
 	void FixedUpdate () {
 		if (levelManager.levelStarted) {
@@ -60,10 +61,12 @@ public class Player : Person {
 		} else if (col.gameObject.tag == "burglar") {
 			Burglar burglar = col.gameObject.GetComponent<Burglar>();
 			if (!burglar.dead) {
-				if (burglar.scareMode)  {
+				if (burglar.scareMode ^ deepThroat) {
 					burglar.Die();
 					GameSingleton.Instance.score += (100 * levelManager.burglarsEatenInScareMode);
 					levelManager.burglarsEatenInScareMode++;
+				} else if (deepThroat) {
+					Destroy(this);
 				} else {
 					levelManager.Die();
 				}
@@ -72,7 +75,6 @@ public class Player : Person {
 	}
 
 	public void applyDirection(Vector2 newDirection) {
-//		Time.timeScale = 1;
 		levelManager.levelStarted = true;
 		if (newDirection == -this.direction) { // quick turn
 			destination = (destination + newDirection);
