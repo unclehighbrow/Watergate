@@ -5,18 +5,28 @@ using System.Collections.Generic;
 public class Player : Person {
 
 	public Vector2 preference = Vector2.zero;
-	public bool deepThroat = false;
+	public bool isDeepThroat = false;
+	public GameObject deepThroatPrefab;
 
 	void FixedUpdate () {
 		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
+				if (isDeepThroat) {
+					Debug.Log ("lets go");
+				}
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.playerSpeed);
 				rigidbody2D.MovePosition(p);
 			} else { // make choice
 				if (valid(preference)) {
+					if (isDeepThroat) {
+						Debug.Log ("has preference");
+					}
 					SetDestination(preference);
 					preference = Vector2.zero;
 				} else if (valid(direction)) {
+					if (isDeepThroat) {
+						Debug.Log ("more of the same");
+					}
 					SetDestination(direction);
 				} 
 			}
@@ -52,25 +62,31 @@ public class Player : Person {
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
-		if (col.gameObject.tag == "pellet") {
+		if (col.gameObject.CompareTag("pellet")) {
 			Destroy(col.gameObject);
 			GameSingleton.Instance.score += 10;
-		} else if (col.gameObject.tag == "power_pellet") {
+		} else if (col.gameObject.CompareTag("power_pellet")) {
 			levelManager.StartScareMode();
 			Destroy(col.gameObject);
-		} else if (col.gameObject.tag == "burglar") {
+		} else if (col.gameObject.CompareTag("burglar")) {
 			Burglar burglar = col.gameObject.GetComponent<Burglar>();
 			if (!burglar.dead) {
-				if (burglar.scareMode ^ deepThroat) {
+				if (burglar.scareMode ^ isDeepThroat) {
 					burglar.Die();
 					GameSingleton.Instance.score += (100 * levelManager.burglarsEatenInScareMode);
 					levelManager.burglarsEatenInScareMode++;
-				} else if (deepThroat) {
+				} else if (isDeepThroat) {
 					Destroy(this);
 				} else {
 					levelManager.Die();
 				}
 			}
+		} else if (col.gameObject.CompareTag("flowerpot") && !isDeepThroat) {
+			Player newDeepThroat = ((GameObject)Instantiate(deepThroatPrefab, transform.position, Quaternion.identity)).GetComponent<Player>();
+			newDeepThroat.destination = destination - direction;
+			newDeepThroat.direction = -direction;
+			levelManager.players.Add(newDeepThroat);
+			Destroy(col.gameObject);
 		}
 	}
 

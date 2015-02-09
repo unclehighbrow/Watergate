@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class LevelManager : MonoBehaviour{
+public class LevelManager : MonoBehaviour {
 	GameObject pelletHolder = null;
 	public bool scareMode = false;
 	public bool levelStarted = false;
@@ -16,6 +16,8 @@ public class LevelManager : MonoBehaviour{
 	public Text scoreUi;
 	public List<GameObject> lifeUis;
 	CanvasGroup pausePanel;
+	public float timeUntilFlowerpot;
+	public GameObject flowerpot;
 
 	public void Pause() {
 		Time.timeScale = 0;
@@ -39,6 +41,7 @@ public class LevelManager : MonoBehaviour{
 		pausePanel = GameObject.Find("pause_panel").GetComponent<CanvasGroup>(); 
 		GameObject.Find("resume_button").GetComponent<Button>().onClick.AddListener(()=>Resume());
 		GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
+		timeUntilFlowerpot = Random.Range(1, 2);
      }
 
 	void Update() {
@@ -53,6 +56,12 @@ public class LevelManager : MonoBehaviour{
 				}
 			}
 			scoreUi.text = GameSingleton.Instance.score.ToString().PadLeft(5, '0');
+			if (timeUntilFlowerpot > 0) {
+				timeUntilFlowerpot -= Time.deltaTime;
+				if (timeUntilFlowerpot <= 0) {
+					Instantiate(flowerpot);
+				}
+			}
 		}
 	}
 
