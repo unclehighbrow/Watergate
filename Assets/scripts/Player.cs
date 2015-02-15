@@ -11,22 +11,13 @@ public class Player : Person {
 	void FixedUpdate () {
 		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
-				if (isDeepThroat) {
-					Debug.Log ("lets go");
-				}
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.playerSpeed);
 				rigidbody2D.MovePosition(p);
 			} else { // make choice
 				if (valid(preference)) {
-					if (isDeepThroat) {
-						Debug.Log ("has preference");
-					}
 					SetDestination(preference);
 					preference = Vector2.zero;
 				} else if (valid(direction)) {
-					if (isDeepThroat) {
-						Debug.Log ("more of the same");
-					}
 					SetDestination(direction);
 				} 
 			}
@@ -36,7 +27,7 @@ public class Player : Person {
 	public void SetDestination(Vector2 dir) {
 		if (valid(dir)) {
 			destination = (Vector2)transform.position + dir;
-			direction = dir;
+			SetDirection(dir);
 		}
 	}
 
@@ -70,13 +61,14 @@ public class Player : Person {
 			Destroy(col.gameObject);
 		} else if (col.gameObject.CompareTag("burglar")) {
 			Burglar burglar = col.gameObject.GetComponent<Burglar>();
-			if (!burglar.dead) {
-				if (burglar.scareMode ^ isDeepThroat) {
+			if (!burglar.GetComponent<Animator>().GetBool("dead")) {
+				if (burglar.GetComponent<Animator>().GetBool("scare") ^ isDeepThroat) {
 					burglar.Die();
 					GameSingleton.Instance.score += (100 * levelManager.burglarsEatenInScareMode);
 					levelManager.burglarsEatenInScareMode++;
 				} else if (isDeepThroat) {
-					Destroy(this);
+					levelManager.players.Remove (this);
+					Destroy(this.gameObject);
 				} else {
 					levelManager.Die();
 				}
@@ -94,7 +86,8 @@ public class Player : Person {
 		levelManager.levelStarted = true;
 		if (newDirection == -this.direction) { // quick turn
 			destination = (destination + newDirection);
-			this.direction = newDirection;
+			SetDirection(newDirection);
+
 		} else if (destination != Vector2.zero && (Vector2)transform.position != destination) { // usual
 			preference = newDirection;
 		} else { // if you happen to end the swipe right on a destinatio

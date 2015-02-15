@@ -6,7 +6,8 @@ public class Burglar : Person {
 	public float scareModeSpeedMultiplier = .6f;
 	public float deadSpeedMultiplier = 5f;
 	public Color color;
-	public bool scareMode = false;
+	public Color scareColor;
+	public Color deadColor;
 
 	public new void Start () {
 		base.Start();
@@ -20,33 +21,33 @@ public class Burglar : Person {
 	}
 	
 	public void StartScareMode() {
-		GetComponent<SpriteRenderer>().color = Color.blue;
-		direction = -direction;
+		GetComponent<SpriteRenderer>().color = scareColor;
+		SetDirection(-1 * direction);
 		destination = (destination + direction);
 		speed *= scareModeSpeedMultiplier;
-		scareMode = true;
+		animator.SetBool("scare", true);
 	}
 	
 	public void EndScareMode() {
-		if (scareMode) {
+		if (animator.GetBool("scare")) {
 			GetComponent<SpriteRenderer>().color = color;
 			speed /= scareModeSpeedMultiplier;
-			scareMode = false;
+			animator.SetBool("scare", false);
 		}
 	}
 
 	public void Die() {
-		dead = true;
+		animator.SetBool("dead", true);
 		EndScareMode();
 		speed *= deadSpeedMultiplier;
-		GetComponent<SpriteRenderer>().color = Color.black;
+		GetComponent<SpriteRenderer>().color = deadColor;
 		waypointCounter = waypoints.Count - 1;
 	}
 
 	public void Undie() {
 		speed /= deadSpeedMultiplier;
 		GetComponent<SpriteRenderer>().color = color;
-		dead = false;
+		animator.SetBool("dead", false);
 	}
 	
 	void FixedUpdate () {
@@ -55,7 +56,7 @@ public class Burglar : Person {
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.burglarSpeed);
 				rigidbody2D.MovePosition(p);
 			} else {
-				if (waypoints.Count > waypointCounter && !dead) { // at start, follow waypoints out of the box
+				if (waypoints.Count > waypointCounter && !animator.GetBool("dead")) { // at start, follow waypoints out of the box
 					Transform waypoint = waypoints[waypointCounter];
 					if (waypoint.position == transform.position) {
 						waypointCounter += 1;
@@ -63,11 +64,11 @@ public class Burglar : Person {
 						direction = waypoint.position - transform.position; // this would make a big vector if more than one space
 						destination = waypoint.position;
 					}
-				} else if (dead && ((Vector2)transform.position == startPosition)) {
+				} else if (animator.GetBool("dead") && ((Vector2)transform.position == startPosition)) {
 					Undie();
 				} else {
 					Vector2 finalDestination = Vector2.zero; 
-					if (dead) {
+					if (animator.GetBool("dead")) {
 						Transform waypoint = waypoints[waypointCounter];
 						if (waypoint.position == transform.position) {
 							if (waypointCounter > 0) {
@@ -82,16 +83,18 @@ public class Burglar : Person {
 						float smallestDistance = -1;
 						Player playerToFollow = null;
 						foreach (Player player in levelManager.players) {
-							float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
-							if (smallestDistance == -1 || distance < smallestDistance) {
-								smallestDistance = distance;
-								playerToFollow = player;
+							if (player != null && player.transform != null)  {
+								float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
+								if (smallestDistance == -1 || distance < smallestDistance) {
+									smallestDistance = distance;
+									playerToFollow = player;
+								}
 							}
 						}
 						finalDestination = playerToFollow.transform.position;
 					}
 
-					findNextDestination(finalDestination, !scareMode);
+					findNextDestination(finalDestination, !animator.GetBool("scare"));
 				}
 			}		
 		}

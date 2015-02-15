@@ -11,18 +11,25 @@ public class Person : MonoBehaviour {
 	public int intelligence;
 	public int waypointCounter = 0;
 	public List<Transform> waypoints = new List<Transform>();
-	public bool dead = false;
-
+	protected Animator animator;
+	
 
 	// Use this for initialization
 	public void Start () {
 		startPosition = transform.position;
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
+		animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void SetDirection(Vector2 direction) {
+		this.direction = direction;
+		animator.SetFloat("x", direction.x);
+		animator.SetFloat("y", direction.y);
 	}
 
 	public void findNextDestination(Vector2 finalDestination, bool towards) {
@@ -46,9 +53,9 @@ public class Person : MonoBehaviour {
 				secondaryDirection = -secondaryDirection;
 			}
 			
-			if (valid (primaryDirection) && (Random.Range(1,10) <= intelligence || dead) && primaryDirection != -direction) {
+			if (valid (primaryDirection) && (Random.Range(1,10) <= intelligence || animator.GetBool("dead")) && primaryDirection != -direction) {
 				actualDirection = primaryDirection;
-			} else if (valid(secondaryDirection) && (Random.Range(1,10) <= intelligence || dead) && secondaryDirection != -direction) {
+			} else if (valid(secondaryDirection) && (Random.Range(1,10) <= intelligence || animator.GetBool("dead")) && secondaryDirection != -direction) {
 				actualDirection = secondaryDirection;
 			} else if (valid(direction)) {
 				actualDirection = direction;
@@ -61,7 +68,7 @@ public class Person : MonoBehaviour {
 			} else if (valid(primaryDirection)) {
 				actualDirection = primaryDirection;
 			}
-			direction = actualDirection;
+			SetDirection(actualDirection);
 			destination = (Vector2)transform.position + actualDirection;
 		}
 	}
