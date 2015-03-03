@@ -12,7 +12,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 
 	public void LoadNextLevel() {
 		if (Application.loadedLevel + 1 >= Application.levelCount - 3) { // 1 for game over, title, and tutorial
-			Application.LoadLevel(1);
+			Application.LoadLevel(2);
 		} else {
 			Application.LoadLevel(Application.loadedLevel + 1);
 		}
