@@ -13,19 +13,15 @@ public class Burglar : Person {
 		base.Start();
 		GetComponent<SpriteRenderer>().color = color;
 	}
-
-	public void Reset() {
-		transform.position = startPosition;
-		destination = Vector2.zero;
-		waypointCounter = 0;
-	}
 	
 	public void StartScareMode() {
-		GetComponent<SpriteRenderer>().color = scareColor;
-		SetDirection(-1 * direction);
-		destination = (destination + direction);
-		speed *= scareModeSpeedMultiplier;
-		animator.SetBool("scare", true);
+		if (!animator.GetBool("dead") && !animator.GetBool("scare")) {
+			GetComponent<SpriteRenderer>().color = scareColor;
+			SetDirection(-1 * direction);
+			destination = (destination + direction);
+			speed *= scareModeSpeedMultiplier;
+			animator.SetBool("scare", true);
+		}
 	}
 	
 	public void EndScareMode() {
@@ -37,17 +33,21 @@ public class Burglar : Person {
 	}
 
 	public void Die() {
-		animator.SetBool("dead", true);
-		EndScareMode();
-		speed *= deadSpeedMultiplier;
-		GetComponent<SpriteRenderer>().color = deadColor;
-		waypointCounter = waypoints.Count - 1;
+		if (!animator.GetBool("dead")) {
+			animator.SetBool("dead", true);
+			EndScareMode();
+			speed *= deadSpeedMultiplier;
+			GetComponent<SpriteRenderer>().color = deadColor;
+			waypointCounter = waypoints.Count - 1;
+		}
 	}
 
 	public void Undie() {
-		speed /= deadSpeedMultiplier;
-		GetComponent<SpriteRenderer>().color = color;
-		animator.SetBool("dead", false);
+		if (animator.GetBool("dead")) {
+			speed /= deadSpeedMultiplier;
+			GetComponent<SpriteRenderer>().color = color;
+			animator.SetBool("dead", false);
+		}
 	}
 	
 	void FixedUpdate () {
@@ -83,7 +83,7 @@ public class Burglar : Person {
 						float smallestDistance = -1;
 						Player playerToFollow = null;
 						foreach (Player player in levelManager.players) {
-							if (player != null && player.transform != null)  {
+							if (player != null && player.transform != null && !player.isDeepThroat )  {
 								float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
 								if (smallestDistance == -1 || distance < smallestDistance) {
 									smallestDistance = distance;

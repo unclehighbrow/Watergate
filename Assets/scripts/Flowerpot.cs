@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Flowerpot : Person {
 	WarpZone enter;
 	WarpZone exit;
+	int minIntelligence = 6;
+	int startIntelligence = 10;
 
 	public new void Start () {
 		base.Start();
@@ -16,7 +18,7 @@ public class Flowerpot : Person {
 		}
 		exit = enter.outWarpZone;
 		speed = 0.05f;
-		intelligence = 6;
+		intelligence = startIntelligence;
 	}
 	
 	void FixedUpdate () {
@@ -26,6 +28,8 @@ public class Flowerpot : Person {
 				rigidbody2D.MovePosition(p);
 			} else {
 				findNextDestination(exit.transform.position, true);
+				intelligence -= 2;
+				intelligence = Mathf.Max(minIntelligence, intelligence);
 			}
 		}
 	}

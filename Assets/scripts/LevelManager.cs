@@ -18,6 +18,7 @@ public class LevelManager : MonoBehaviour {
 	CanvasGroup pausePanel;
 	public float timeUntilFlowerpot;
 	public GameObject flowerpot;
+	public bool tutorial = false;
 
 	public void Pause() {
 		Time.timeScale = 0;
@@ -35,17 +36,19 @@ public class LevelManager : MonoBehaviour {
 		players.Sort(Util.SortByName);
 		burglars = new List<Burglar>(GameObject.FindObjectsOfType<Burglar>());
 		warpZones = new List<WarpZone>(GameObject.FindObjectsOfType<WarpZone>());
-		scoreUi = GameObject.Find ("score").GetComponent<Text>();
-		lifeUis = new List<GameObject>(GameObject.FindGameObjectsWithTag("life"));
-		lifeUis.Sort(Util.SortByName);
-		pausePanel = GameObject.Find("pause_panel").GetComponent<CanvasGroup>(); 
-		GameObject.Find("resume_button").GetComponent<Button>().onClick.AddListener(()=>Resume());
-		GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
-		timeUntilFlowerpot = Random.Range(1, 2);
+		if (!tutorial) { 
+			scoreUi = GameObject.Find ("score").GetComponent<Text>();
+			lifeUis = new List<GameObject>(GameObject.FindGameObjectsWithTag("life"));
+			lifeUis.Sort(Util.SortByName);
+			pausePanel = GameObject.Find("pause_panel").GetComponent<CanvasGroup>(); 
+			GameObject.Find("resume_button").GetComponent<Button>().onClick.AddListener(()=>Resume());
+			GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
+			timeUntilFlowerpot = Random.Range(1, 2);
+		}
      }
 
 	void Update() {
-		if (levelStarted) {
+		if (levelStarted && !tutorial) {
 			if (pelletHolder.transform.childCount == 0) {
 				GameSingleton.Instance.LoadNextLevel();
 			}
@@ -80,16 +83,32 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	public void Die() {
-		levelStarted = false;
+	public void FinishDying() {
 		foreach (Burglar burglar in burglars) {
 			burglar.Reset();
 		}
 		foreach (Player player in players) {
-			player.Reset();
+			if (player.isDeepThroat) {
+				Destroy(player.gameObject);
+			} else {
+				player.Reset();
+			}
+		}
+		players.RemoveAll(p => p.isDeepThroat);
+
+		Flowerpot flowerpot = GameObject.FindObjectOfType<Flowerpot>();
+		if (flowerpot != null) {
+			Destroy(flowerpot.gameObject);
 		}
 		GameSingleton.Instance.lives--;
 		lifeUis[GameSingleton.Instance.lives].GetComponent<Image>().enabled = false;
 		GameSingleton.Instance.Die();
+	}
+
+	public void Die() {
+		levelStarted = false;
+		foreach (Player player in players) {
+			player.gameObject.GetComponent<Animator>().SetBool("dead", true);
+		}
 	}
 }

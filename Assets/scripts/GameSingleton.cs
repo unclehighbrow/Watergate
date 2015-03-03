@@ -10,19 +10,8 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public float playerSpeedMultiplier = 1.1f;
 	public float burglarSpeedMultiplier = 1.2f;
 
-	// Use this for initialization
-	void Start () {
-
-	}
-
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
-
 	public void LoadNextLevel() {
-		if (Application.loadedLevel + 1 >= Application.levelCount - 1) { // -1 for game over, probably -2 for title screen
+		if (Application.loadedLevel + 1 >= Application.levelCount - 3) { // 1 for game over, title, and tutorial
 			Application.LoadLevel(1);
 		} else {
 			Application.LoadLevel(Application.loadedLevel + 1);

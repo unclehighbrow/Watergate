@@ -6,7 +6,7 @@ public class WatergateControl : MonoBehaviour {
 	Hashtable touchMap = new Hashtable();
 	//Hashtable ignoreTouchMap = new Hashtable();
 	Vector3 firstMousePosition;
-	public LevelManager levelManager;
+	LevelManager levelManager;
 
 	void Start() {
 		levelManager = GameObject.FindObjectOfType<LevelManager>();

@@ -12,8 +12,8 @@ public class Person : MonoBehaviour {
 	public int waypointCounter = 0;
 	public List<Transform> waypoints = new List<Transform>();
 	protected Animator animator;
+	public Vector2 preference = Vector2.zero;
 	
-
 	// Use this for initialization
 	public void Start () {
 		startPosition = transform.position;
@@ -30,6 +30,18 @@ public class Person : MonoBehaviour {
 		this.direction = direction;
 		animator.SetFloat("x", direction.x);
 		animator.SetFloat("y", direction.y);
+	}
+	
+	public void Reset() {
+		transform.position = startPosition;
+		destination = Vector2.zero;
+		preference = Vector2.zero;
+		direction = Vector2.zero;
+		animator.SetBool("dead", false);
+		animator.SetFloat("x", 0f);
+		animator.SetFloat("y", 0f);
+		animator.Play("Idle");
+		waypointCounter = 0;
 	}
 
 	public void findNextDestination(Vector2 finalDestination, bool towards) {

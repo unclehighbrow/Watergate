@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Player : Person {
 
-	public Vector2 preference = Vector2.zero;
 	public bool isDeepThroat = false;
 	public GameObject deepThroatPrefab;
 
@@ -31,11 +30,8 @@ public class Player : Person {
 		}
 	}
 
-	public void Reset() {
-		transform.position = startPosition;
-		destination = Vector2.zero;
-		preference = Vector2.zero;
-		direction = Vector2.zero;
+	public void FinishDying() {
+		levelManager.FinishDying(); // woodward gives the signal in his animation, not bernstein or deep throats
 	}
 
 	bool valid(Vector2 dir) {
@@ -62,13 +58,10 @@ public class Player : Person {
 		} else if (col.gameObject.CompareTag("burglar")) {
 			Burglar burglar = col.gameObject.GetComponent<Burglar>();
 			if (!burglar.GetComponent<Animator>().GetBool("dead")) {
-				if (burglar.GetComponent<Animator>().GetBool("scare") ^ isDeepThroat) {
+				if (burglar.GetComponent<Animator>().GetBool("scare")) {
 					burglar.Die();
 					GameSingleton.Instance.score += (100 * levelManager.burglarsEatenInScareMode);
 					levelManager.burglarsEatenInScareMode++;
-				} else if (isDeepThroat) {
-					levelManager.players.Remove (this);
-					Destroy(this.gameObject);
 				} else {
 					levelManager.Die();
 				}
@@ -77,21 +70,24 @@ public class Player : Person {
 			Player newDeepThroat = ((GameObject)Instantiate(deepThroatPrefab, transform.position, Quaternion.identity)).GetComponent<Player>();
 			newDeepThroat.destination = destination - direction;
 			newDeepThroat.direction = -direction;
+			newDeepThroat.startPosition = destination;
 			levelManager.players.Add(newDeepThroat);
 			Destroy(col.gameObject);
 		}
 	}
 
 	public void applyDirection(Vector2 newDirection) {
-		levelManager.levelStarted = true;
-		if (newDirection == -this.direction) { // quick turn
-			destination = (destination + newDirection);
-			SetDirection(newDirection);
+		if (!animator.GetBool("dead")) {
+			levelManager.levelStarted = true;
+			if (newDirection == -this.direction) { // quick turn
+				destination = (destination + newDirection);
+				SetDirection(newDirection);
 
-		} else if (destination != Vector2.zero && (Vector2)transform.position != destination) { // usual
-			preference = newDirection;
-		} else { // if you happen to end the swipe right on a destinatio
-			SetDestination(newDirection);
+			} else if (destination != Vector2.zero && (Vector2)transform.position != destination) { // usual
+				preference = newDirection;
+			} else { // if you happen to end the swipe right on a destination
+				SetDestination(newDirection);
+			}
 		}
 	}
 
