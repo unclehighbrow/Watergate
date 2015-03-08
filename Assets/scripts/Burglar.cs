@@ -6,8 +6,6 @@ public class Burglar : Person {
 	public float scareModeSpeedMultiplier = .6f;
 	public float deadSpeedMultiplier = 5f;
 	public Color color;
-	public Color scareColor;
-	public Color deadColor;
 
 	public new void Start () {
 		base.Start();
@@ -16,11 +14,11 @@ public class Burglar : Person {
 	
 	public void StartScareMode() {
 		if (!animator.GetBool("dead") && !animator.GetBool("scare")) {
-			GetComponent<SpriteRenderer>().color = scareColor;
 			SetDirection(-1 * direction);
 			destination = (destination + direction);
 			speed *= scareModeSpeedMultiplier;
 			animator.SetBool("scare", true);
+			GetComponent<SpriteRenderer>().color = Color.white;
 		}
 	}
 	
@@ -37,8 +35,8 @@ public class Burglar : Person {
 			animator.SetBool("dead", true);
 			EndScareMode();
 			speed *= deadSpeedMultiplier;
-			GetComponent<SpriteRenderer>().color = deadColor;
 			waypointCounter = waypoints.Count - 1;
+			GetComponent<SpriteRenderer>().color = Color.white;
 		}
 	}
 

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e66b61170d15e4211abe96757b8f1293
-timeCreated: 1425784048
+timeCreated: 1425842790
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -14,6 +14,8 @@ TextureImporter:
     21300014: inside
     21300016: double short
     21300018: filler
+    21300020: pellet
+    21300022: power_pellet
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -116,6 +118,26 @@ TextureImporter:
         y: 12
         width: 3
         height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: pellet
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 28
+        width: 4
+        height: 3
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: power_pellet
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 25
+        width: 7
+        height: 7
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
