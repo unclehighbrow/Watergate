@@ -38,7 +38,7 @@ public class Burglar : Person {
 			waypointCounter = waypoints.Count - 1;
 			GetComponent<SpriteRenderer>().color = Color.white;
 		}
-	}
+	}	
 
 	public void Undie() {
 		if (animator.GetBool("dead")) {
