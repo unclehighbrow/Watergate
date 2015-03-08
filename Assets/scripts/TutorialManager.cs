@@ -21,6 +21,8 @@ public class TutorialManager : MonoBehaviour {
 	public Sprite woodwardSprite;
 	public Sprite bernsteinSprite;
 	public Sprite deepThroatSprite;
+	public GameObject tutorialArrowW;
+	public GameObject tutorialArrowB;
 
 	IEnumerator DisplayLine(string text, Sprite sprite) {
 		while (writing) {
@@ -77,6 +79,8 @@ public class TutorialManager : MonoBehaviour {
 		woodward.transform.position = new Vector3(-1.5f, -9.5f, 0f);
 		bernstein.gameObject.SetActive(true);
 		levelManager.players.Add(bernstein);
+		tutorialArrowB.SetActive(true);
+		tutorialArrowW.SetActive(true);	
 	}
 
 	IEnumerator StartGame() {
@@ -109,6 +113,7 @@ public class TutorialManager : MonoBehaviour {
 		wallHolder1.SetActive(true);
 		wallHolder2.SetActive(false);
 		bernstein.gameObject.SetActive(false);
+		tutorialArrowB.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -124,6 +129,13 @@ public class TutorialManager : MonoBehaviour {
 			if (touch.phase == TouchPhase.Began) {
 				next = true;
 			}
+		}
+
+		if (woodward.direction.y > 0) {
+			tutorialArrowW.SetActive(false);
+		}
+		if (bernstein.direction.y > 0) {
+			tutorialArrowB.SetActive(false);
 		}
 	}
 }

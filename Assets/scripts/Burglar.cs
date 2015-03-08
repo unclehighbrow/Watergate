@@ -54,7 +54,7 @@ public class Burglar : Person {
 		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.burglarSpeed);
-				rigidbody2D.MovePosition(p);
+				GetComponent<Rigidbody2D>().MovePosition(p);
 			} else {
 				if (waypoints.Count > waypointCounter && !animator.GetBool("dead")) { // at start, follow waypoints out of the box
 					Transform waypoint = waypoints[waypointCounter];

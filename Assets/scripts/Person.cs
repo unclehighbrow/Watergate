@@ -38,6 +38,7 @@ public class Person : MonoBehaviour {
 		preference = Vector2.zero;
 		direction = Vector2.zero;
 		animator.SetBool("dead", false);
+		animator.SetBool("scare", false);
 		animator.SetFloat("x", 0f);
 		animator.SetFloat("y", 0f);
 		animator.Play("Idle");

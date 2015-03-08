@@ -25,7 +25,7 @@ public class Flowerpot : Person {
 		if (levelManager.levelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
-				rigidbody2D.MovePosition(p);
+				GetComponent<Rigidbody2D>().MovePosition(p);
 			} else {
 				findNextDestination(exit.transform.position, true);
 				intelligence -= 2;
