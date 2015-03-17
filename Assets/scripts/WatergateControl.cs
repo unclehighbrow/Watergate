@@ -39,8 +39,8 @@ public class WatergateControl : MonoBehaviour {
 				}
 //			} else if (touch.phase == TouchPhase.Ended) {
 //				ignoreTouchMap[touch.fingerId] = null;
-			} else {
-				Debug.Log("got weird touch");
+//			} else {
+//				Debug.Log("got weird touch: " + touch.phase);
 			}
 		}
 
