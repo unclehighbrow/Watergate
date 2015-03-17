@@ -25,6 +25,12 @@ public class LevelManager : MonoBehaviour {
 		pausePanel.alpha = 1;
 	}
 
+	void OnApplicationPause(bool pauseStatus) {
+		if (pauseStatus) {
+			Pause();
+		}
+	}
+
 	public void Resume() {
 		pausePanel.alpha = 0;
 		Time.timeScale = 1;
