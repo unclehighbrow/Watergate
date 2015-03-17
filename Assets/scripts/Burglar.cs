@@ -81,7 +81,7 @@ public class Burglar : Person {
 						float smallestDistance = -1;
 						Player playerToFollow = null;
 						foreach (Player player in levelManager.players) {
-							if (player != null && player.transform != null && !player.isDeepThroat )  {
+							if (player != null && player.transform != null && !player.GetComponent<Animator>().GetBool("dead"))  {
 								float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
 								if (smallestDistance == -1 || distance < smallestDistance) {
 									smallestDistance = distance;

@@ -31,7 +31,12 @@ public class Player : Person {
 	}
 
 	public void FinishDying() {
-		levelManager.FinishDying(); // woodward gives the signal in his animation, not bernstein or deep throats
+		levelManager.FinishDying(); // woodward gives the signal in his animation, not bernstein or deep throat
+	}
+
+	public void DeepThroatDeath() {
+		levelManager.players.Remove(this);
+		Destroy (gameObject);
 	}
 
 	bool valid(Vector2 dir) {
@@ -57,11 +62,14 @@ public class Player : Person {
 			Destroy(col.gameObject);
 		} else if (col.gameObject.CompareTag("burglar")) {
 			Burglar burglar = col.gameObject.GetComponent<Burglar>();
-			if (!burglar.GetComponent<Animator>().GetBool("dead")) {
+			if (!burglar.GetComponent<Animator>().GetBool("dead") && !animator.GetBool("dead")) {
 				if (burglar.GetComponent<Animator>().GetBool("scare")) {
 					burglar.Die();
 					GameSingleton.Instance.score += (100 * levelManager.burglarsEatenInScareMode);
 					levelManager.burglarsEatenInScareMode++;
+				} else if (isDeepThroat) {
+					animator.SetBool("dead", true);
+					burglar.Die();
 				} else {
 					levelManager.Die();
 				}
