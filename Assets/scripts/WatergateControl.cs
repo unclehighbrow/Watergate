@@ -26,15 +26,21 @@ public class WatergateControl : MonoBehaviour {
 		for (int i = 0 ; i < Input.touchCount; i++) {
 			Touch touch = touches[i];
 			if (touch.phase == TouchPhase.Began) {
+				Debug.Log ("touch began");
 				touchMap[touch.fingerId] = touch;
 			} else if (touch.phase == TouchPhase.Moved) { // && ignoreTouchMap[touch.fingerId] == null) {
 				if (touchMap.ContainsKey(touch.fingerId)) {
+					Debug.Log("got old touch: " + touch.fingerId);
 					Touch firstTouch = (Touch) touchMap[touch.fingerId];
 					performMove(firstTouch.position, touch.position);
+					Debug.Log("first pso:" + firstTouch.position);
+					Debug.Log("first pso:" + touch.position);
 //					ignoreTouchMap[touch.fingerId] = 1;
 				}
 //			} else if (touch.phase == TouchPhase.Ended) {
 //				ignoreTouchMap[touch.fingerId] = null;
+			} else {
+				Debug.Log("got weird touch");
 			}
 		}
 
