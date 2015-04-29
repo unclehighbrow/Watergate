@@ -68,7 +68,7 @@ public class LevelManager : MonoBehaviour {
 			if (timeUntilFlowerpot > 0) {
 				timeUntilFlowerpot -= Time.deltaTime;
 				if (timeUntilFlowerpot <= 0) {
-					Instantiate(flowerpot);
+					//Instantiate(flowerpot);
 				}
 			}
 		}

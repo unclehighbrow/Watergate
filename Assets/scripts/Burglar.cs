@@ -6,6 +6,7 @@ public class Burglar : Person {
 	public float scareModeSpeedMultiplier = .6f;
 	public float deadSpeedMultiplier = 5f;
 	public Color color;
+	public Player hardTarget;
 
 	public new void Start () {
 		base.Start();
@@ -14,6 +15,7 @@ public class Burglar : Person {
 	
 	public void StartScareMode() {
 		if (!animator.GetBool("dead") && !animator.GetBool("scare")) {
+			hardTarget = null;
 			SetDirection(-1 * direction);
 			destination = (destination + direction);
 			speed *= scareModeSpeedMultiplier;
@@ -79,13 +81,15 @@ public class Burglar : Person {
 						}
 					} else {
 						float smallestDistance = -1;
-						Player playerToFollow = null;
-						foreach (Player player in levelManager.players) {
-							if (player != null && player.transform != null && !player.GetComponent<Animator>().GetBool("dead"))  {
-								float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
-								if (smallestDistance == -1 || distance < smallestDistance) {
-									smallestDistance = distance;
-									playerToFollow = player;
+						Player playerToFollow = hardTarget;
+						if (playerToFollow == null) {
+							foreach (Player player in levelManager.players) {
+								if (player != null && player.transform != null && !player.GetComponent<Animator>().GetBool("dead"))  {
+									float distance = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
+									if (smallestDistance == -1 || distance < smallestDistance) {
+										smallestDistance = distance;
+										playerToFollow = player;
+									}
 								}
 							}
 						}
