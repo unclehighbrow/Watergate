@@ -11,20 +11,14 @@ public class Player : Person {
 
 	void Update() {
 		if (levelManager.levelStarted) {
-			if (GetComponent<Rigidbody2D>().velocity == Vector2.zero) {
-				idleTime += Time.deltaTime;
-				if (idleTime > maxIdleTime) {
-					Debug.Log ("hit idle time");
-					foreach (Burglar burglar in levelManager.burglars) {
-						if (!burglar.GetComponent<Animator>().GetBool("scare") && !burglar.GetComponent<Animator>().GetBool("dead")) {
-							Debug.Log ("found burglar for hard target");
-							burglar.hardTarget = this;
-							break;
-						}
+			idleTime += Time.deltaTime;
+			if (idleTime > maxIdleTime) {
+				foreach (Burglar burglar in levelManager.burglars) {
+					if (!burglar.GetComponent<Animator>().GetBool("scare") && !burglar.GetComponent<Animator>().GetBool("dead")) {
+						burglar.hardTarget = this;
+						break;
 					}
 				}
-			} else {
-				idleTime = 0;
 			}
 		}
 	}
@@ -47,6 +41,7 @@ public class Player : Person {
 
 	public void SetDestination(Vector2 dir) {
 		if (valid(dir)) {
+			idleTime = 0;
 			destination = (Vector2)transform.position + dir;
 			SetDirection(dir);
 		}

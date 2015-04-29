@@ -23,8 +23,11 @@ public class TutorialManager : MonoBehaviour {
 	public Sprite deepThroatSprite;
 	public GameObject tutorialArrowW;
 	public GameObject tutorialArrowB;
+	int ellipsisCount = 0;
 
-	IEnumerator DisplayLine(string text, Sprite sprite) {
+	IEnumerator DisplayLine(string text, Sprite sprite, bool ellipsis) {
+		StopCoroutine("Ellipsis");
+		ellipsisCount = 0;
 		while (writing) {
 			yield return new WaitForEndOfFrame();
 		}
@@ -64,7 +67,22 @@ public class TutorialManager : MonoBehaviour {
 				}
 			}
 		}
+		if (ellipsis) {
+			StartCoroutine("Ellipsis");
+		}
 		writing = false;
+	}
+
+	IEnumerator Ellipsis() {
+		while (true) {
+			uiText.text += ".";
+			ellipsisCount += 1;
+			if (ellipsisCount == 4) {
+				uiText.text = uiText.text.Substring(0, uiText.text.Length - 4);
+				ellipsisCount = 0;
+			}
+			yield return new WaitForSeconds(.3f);
+		}
 	}
 
 	IEnumerator StartSecondPart() {
@@ -72,7 +90,7 @@ public class TutorialManager : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 		}
 		wallHolder1.SetActive(false);
-		StartCoroutine(DisplayLine("Hold up. I'm Bernstein! You gotta control us at the same time!", bernsteinSprite));
+		StartCoroutine(DisplayLine("Hold up. I'm Bernstein! You gotta control us at the same time!", bernsteinSprite, false));
 		next = false;
 		wallHolder2.SetActive(true);
 		woodward.Reset();
@@ -93,13 +111,13 @@ public class TutorialManager : MonoBehaviour {
 	public void GoalHit(Goal goal) {
 		next = false;
 		if (mode == 1) {
-			StartCoroutine(DisplayLine("Yay! You can swipe a little early to make cornering easier.", woodwardSprite));
+			StartCoroutine(DisplayLine("Yay! You can swipe a little early to make cornering easier.", woodwardSprite, true));
 			StartCoroutine(StartSecondPart());
 			mode = 2;
 		} else if (mode == 2) {
 			goalsHit++;
 			if (goalsHit == 2) {
-				StartCoroutine(DisplayLine("You got this. Let's get to the hotel to investigate the burglary!", bernsteinSprite));
+				StartCoroutine(DisplayLine("You got this. Let's get to the hotel to investigate the burglary!", bernsteinSprite, true));
 				next = false;
 				StartCoroutine(StartGame());
 			}
@@ -109,7 +127,7 @@ public class TutorialManager : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		StartCoroutine(DisplayLine("Hi, I'm Woodward. Swipe on me to get out of this maze! I've got reporting to do!", woodwardSprite));
+		StartCoroutine(DisplayLine("Hi, I'm Woodward. Swipe on me to get out of this maze! I've got reporting to do!", woodwardSprite, false));
 		wallHolder1.SetActive(true);
 		wallHolder2.SetActive(false);
 		bernstein.gameObject.SetActive(false);
