@@ -16,38 +16,16 @@ public class WatergateControl : MonoBehaviour {
 		if (Time.timeScale < 1) {
 			return;
 		}
+
+#if UNITY_EDITOR
 		// mouse
 		if (Input.GetMouseButtonDown(0)) {
-			Debug.Log ("mouse down");
 			firstMousePosition = Input.mousePosition;
 		}
 		if (Input.GetMouseButtonUp(0)) {
-			Debug.Log ("mouse up");
 			performMove(firstMousePosition, Input.mousePosition);
 		}
 		
-		// touch
-		Touch[] touches = Input.touches;
-		for (int i = 0 ; i < Input.touchCount; i++) {
-			Touch touch = touches[i];
-			if (touch.phase == TouchPhase.Began) {
-				Debug.Log ("touch began");
-				touchMap[touch.fingerId] = touch;
-			} else if (touch.phase == TouchPhase.Moved) { // && ignoreTouchMap[touch.fingerId] == null) {
-				if (touchMap.ContainsKey(touch.fingerId)) {
-					Debug.Log("got old touch: " + touch.fingerId);
-					Touch firstTouch = (Touch) touchMap[touch.fingerId];
-					performMove(firstTouch.position, touch.position);
-					Debug.Log("first pso:" + firstTouch.position);
-					Debug.Log("first pso:" + touch.position);
-					touchMap.Remove(touch.fingerId);
-//					ignoreTouchMap[touch.fingerId] = 1;
-				}
-//			} else if (touch.phase == TouchPhase.Ended) {
-//				ignoreTouchMap[touch.fingerId] = null;
-			}
-		}
-
 		if (Input.GetKeyDown("a")) {
 			levelManager.players[0].applyDirection(-Vector2.right);
 		} else if (Input.GetKeyDown("s")) {
@@ -57,7 +35,7 @@ public class WatergateControl : MonoBehaviour {
 		} else if (Input.GetKeyDown("w")) {
 			levelManager.players[0].applyDirection(Vector2.up);
 		}
-
+		
 		if (Input.GetKeyDown("j")) {
 			levelManager.players[1].applyDirection(-Vector2.right);
 		} else if (Input.GetKeyDown("k")) {
@@ -67,6 +45,21 @@ public class WatergateControl : MonoBehaviour {
 		} else if (Input.GetKeyDown("i")) {
 			levelManager.players[1].applyDirection(Vector2.up);
 		}
+#else		
+		// touch
+		Touch[] touches = Input.touches;
+		for (int i = 0 ; i < Input.touchCount; i++) {
+			Touch touch = touches[i];
+			if (touch.phase == TouchPhase.Began) {
+				touchMap[touch.fingerId] = touch.position;
+			} else if (touch.phase == TouchPhase.Moved && touchMap.ContainsKey(touch.fingerId)) {
+				Vector2 firstTouch = (Vector2) touchMap[touch.fingerId];
+				performMove(firstTouch, touch.position);
+				touchMap.Remove(touch.fingerId);
+			}
+		}
+#endif
+
 	}
 
 	void performMove(Vector3 start, Vector3 end) {
@@ -100,6 +93,7 @@ public class WatergateControl : MonoBehaviour {
 					direction = -Vector2.up;
 				}
 			}
+			Debug.Log ("direction:" + direction);
 			player.applyDirection(direction);
 		}
 	}
