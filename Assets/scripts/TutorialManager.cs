@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class TutorialManager : MonoBehaviour {
 	public Text uiText;
 	public Text shadowText;
+	public Text ellipsisText;
 
 	int currentLines;
 	bool next = false;
@@ -23,11 +24,14 @@ public class TutorialManager : MonoBehaviour {
 	public Sprite deepThroatSprite;
 	public GameObject tutorialArrowW;
 	public GameObject tutorialArrowB;
-	int ellipsisCount = 0;
+
+	void StopEllipsis() {
+		StopCoroutine("Ellipsis");
+		ellipsisText.text = "";
+	}
 
 	IEnumerator DisplayLine(string text, Sprite sprite, bool ellipsis) {
-		StopCoroutine("Ellipsis");
-		ellipsisCount = 0;
+		StopEllipsis();
 		while (writing) {
 			yield return new WaitForEndOfFrame();
 		}
@@ -75,17 +79,16 @@ public class TutorialManager : MonoBehaviour {
 
 	IEnumerator Ellipsis() {
 		while (true) {
-			uiText.text += ".";
-			ellipsisCount += 1;
-			if (ellipsisCount == 4) {
-				uiText.text = uiText.text.Substring(0, uiText.text.Length - 4);
-				ellipsisCount = 0;
+			ellipsisText.text += ".";
+			if (ellipsisText.text.Length == 4) {
+				ellipsisText.text = "";
 			}
 			yield return new WaitForSeconds(.3f);
 		}
 	}
 
 	IEnumerator StartSecondPart() {
+		StopEllipsis();
 		while (!next) {
 			yield return new WaitForEndOfFrame();
 		}
@@ -145,6 +148,7 @@ public class TutorialManager : MonoBehaviour {
 		for (int i = 0 ; i < Input.touchCount; i++) {
 			Touch touch = touches[i];
 			if (touch.phase == TouchPhase.Began) {
+				StopEllipsis();
 				next = true;
 			}
 		}

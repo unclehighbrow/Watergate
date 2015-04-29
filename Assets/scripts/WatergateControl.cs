@@ -13,11 +13,16 @@ public class WatergateControl : MonoBehaviour {
 	}
 
 	void Update () {		
+		if (Time.timeScale < 1) {
+			return;
+		}
 		// mouse
 		if (Input.GetMouseButtonDown(0)) {
+			Debug.Log ("mouse down");
 			firstMousePosition = Input.mousePosition;
 		}
 		if (Input.GetMouseButtonUp(0)) {
+			Debug.Log ("mouse up");
 			performMove(firstMousePosition, Input.mousePosition);
 		}
 		
@@ -35,12 +40,11 @@ public class WatergateControl : MonoBehaviour {
 					performMove(firstTouch.position, touch.position);
 					Debug.Log("first pso:" + firstTouch.position);
 					Debug.Log("first pso:" + touch.position);
+					touchMap.Remove(touch.fingerId);
 //					ignoreTouchMap[touch.fingerId] = 1;
 				}
 //			} else if (touch.phase == TouchPhase.Ended) {
 //				ignoreTouchMap[touch.fingerId] = null;
-//			} else {
-//				Debug.Log("got weird touch: " + touch.phase);
 			}
 		}
 
