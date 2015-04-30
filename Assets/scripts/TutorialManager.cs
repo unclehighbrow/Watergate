@@ -56,6 +56,8 @@ public class TutorialManager : MonoBehaviour {
 						currentLines = shadowText.cachedTextGenerator.lineCount;
 						newLine = true;
 					}	
+				} else {
+					newLine = true;
 				}
 
 				foreach (char letter in word) {
@@ -63,6 +65,10 @@ public class TutorialManager : MonoBehaviour {
 					yield return new WaitForSeconds(.02f);
 				}
 			
+				Debug.Log("text:" + uiText.text);
+				Debug.Log("shadow: " + shadowText.text);
+				Debug.Log("newLine: " + newLine);
+
 				if (newLine) {
 					uiText.text += "\n";
 					newLine = false;
@@ -108,6 +114,7 @@ public class TutorialManager : MonoBehaviour {
 		while (!next) {
 			yield return new WaitForEndOfFrame();
 		}
+		PlayerPrefs.SetInt("seenTutorial", 1);
 		Application.LoadLevel(2);
 	}
 

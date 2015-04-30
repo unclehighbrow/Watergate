@@ -80,9 +80,9 @@ public class GameSingleton : Singleton<GameSingleton> {
 		} 
 	}
 
-	public void LoadFirstLevel() {
+	public void LoadLevel(int level) {
 		this.lives = 3;
 		this.score = 0;
-		Application.LoadLevel(1);
+		Application.LoadLevel(level);
 	}
 }

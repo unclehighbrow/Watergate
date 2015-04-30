@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour {
 
 	public void Pause() {
 		Time.timeScale = 0;
-		pausePanel.alpha = 1;
+	//	pausePanel.alpha = 1;
 	}
 
 	void OnApplicationPause(bool pauseStatus) {
@@ -46,6 +46,7 @@ public class LevelManager : MonoBehaviour {
 			scoreUi = GameObject.Find ("score").GetComponent<Text>();
 			lifeUis = new List<GameObject>(GameObject.FindGameObjectsWithTag("life"));
 			lifeUis.Sort(Util.SortByName);
+			lifeUis.Reverse();
 			pausePanel = GameObject.Find("pause_panel").GetComponent<CanvasGroup>(); 
 			GameObject.Find("resume_button").GetComponent<Button>().onClick.AddListener(()=>Resume());
 			GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
@@ -90,7 +91,19 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void FinishDying() {
+		GameSingleton.Instance.lives--;
+		Debug.Log ("lives: " + GameSingleton.Instance.lives);
+		for (int i = 0; i < lifeUis.Count; i++) {
+			if (i >= GameSingleton.Instance.lives) {
+				Debug.Log ("hiding: " + lifeUis[i].name);
+				lifeUis[i].GetComponent<Image>().enabled = false;
+			}
+		}
+		GameSingleton.Instance.Die();
+
 		foreach (Burglar burglar in burglars) {
+			burglar.EndScareMode();
+			burglar.Undie();
 			burglar.Reset();
 		}
 		foreach (Player player in players) {
@@ -106,9 +119,6 @@ public class LevelManager : MonoBehaviour {
 		if (flowerpot != null) {
 			Destroy(flowerpot.gameObject);
 		}
-		GameSingleton.Instance.lives--;
-		lifeUis[GameSingleton.Instance.lives].GetComponent<Image>().enabled = false;
-		GameSingleton.Instance.Die();
 	}
 
 	public void Die() {

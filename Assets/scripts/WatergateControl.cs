@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class WatergateControl : MonoBehaviour {
 	Hashtable touchMap = new Hashtable();
-	//Hashtable ignoreTouchMap = new Hashtable();
 	Vector3 firstMousePosition;
 	LevelManager levelManager;
 
@@ -45,7 +44,7 @@ public class WatergateControl : MonoBehaviour {
 		} else if (Input.GetKeyDown("i")) {
 			levelManager.players[1].applyDirection(Vector2.up);
 		}
-#else		
+#endif
 		// touch
 		Touch[] touches = Input.touches;
 		for (int i = 0 ; i < Input.touchCount; i++) {
@@ -58,7 +57,7 @@ public class WatergateControl : MonoBehaviour {
 				touchMap.Remove(touch.fingerId);
 			}
 		}
-#endif
+
 
 	}
 
