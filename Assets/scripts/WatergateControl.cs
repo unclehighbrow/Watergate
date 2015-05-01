@@ -92,7 +92,7 @@ public class WatergateControl : MonoBehaviour {
 					direction = -Vector2.up;
 				}
 			}
-			Debug.Log ("direction:" + direction);
+
 			player.applyDirection(direction);
 		}
 	}

@@ -14,6 +14,8 @@ public class Goal : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
-		GameObject.FindObjectOfType<TutorialManager>().GoalHit(this);
+		if (!col.gameObject.CompareTag("flowerpot")) {
+			GameObject.FindObjectOfType<TutorialBase>().GoalHit(this);
+		}
 	}
 }

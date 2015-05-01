@@ -29,7 +29,7 @@ public class TutorialManager : TutorialBase {
 		Application.LoadLevel(2);
 	}
 
-	public void GoalHit(Goal goal) {
+	public override void GoalHit(Goal goal) {
 		next = false;
 		if (mode == 1) {
 			StartCoroutine(DisplayLine("Yay! You can swipe a little early to make cornering easier.", woodwardSprite, true));
@@ -56,21 +56,8 @@ public class TutorialManager : TutorialBase {
 	}
 	
 	// Update is called once per frame
-	void Update () {		
-		// mouse
-		if (Input.GetMouseButtonDown(0)) {
-			next = true;
-		}
-		// touch
-		Touch[] touches = Input.touches;
-		for (int i = 0 ; i < Input.touchCount; i++) {
-			Touch touch = touches[i];
-			if (touch.phase == TouchPhase.Began) {
-				StopEllipsis();
-				next = true;
-			}
-		}
-
+	public new void Update () {		
+		base.Update();
 		if (woodward.direction.y > 0) {
 			tutorialArrowW.SetActive(false);
 		}

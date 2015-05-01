@@ -25,6 +25,23 @@ public class TutorialBase : MonoBehaviour {
 	public Sprite deepThroatSprite;
 	public GameObject tutorialArrowW;
 	public GameObject tutorialArrowB;
+
+	public void Update() {
+		// mouse
+		if (Input.GetMouseButtonDown(0)) {
+			next = true;
+		}
+		// touch
+		Touch[] touches = Input.touches;
+		for (int i = 0 ; i < Input.touchCount; i++) {
+			Touch touch = touches[i];
+			if (touch.phase == TouchPhase.Began) {
+				StopEllipsis();
+				next = true;
+			}
+		}
+
+	}
 	
 	public void StopEllipsis() {
 		StopCoroutine("Ellipsis");
@@ -66,10 +83,6 @@ public class TutorialBase : MonoBehaviour {
 					yield return new WaitForSeconds(.02f);
 				}
 				
-				Debug.Log("text:" + uiText.text);
-				Debug.Log("shadow: " + shadowText.text);
-				Debug.Log("newLine: " + newLine);
-				
 				if (newLine) {
 					uiText.text += "\n";
 					newLine = false;
@@ -84,6 +97,9 @@ public class TutorialBase : MonoBehaviour {
 			StopEllipsis();
 		}
 		writing = false;
+	}
+
+	public virtual void GoalHit(Goal goal) {
 	}
 	
 	public IEnumerator Ellipsis() {

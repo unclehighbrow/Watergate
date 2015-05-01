@@ -10,15 +10,17 @@ public class Flowerpot : Person {
 
 	public new void Start () {
 		base.Start();
-		enter = levelManager.warpZones[Random.Range(0, levelManager.warpZones.Count)];
-		if (enter.transform.position.x < 0) {
-			transform.position = (Vector2)enter.transform.position + Vector2.right;
-		} else {
-			transform.position = (Vector2)enter.transform.position - Vector2.right;
+		if (!levelManager.tutorial) {
+			enter = levelManager.warpZones[Random.Range(0, levelManager.warpZones.Count)];
+			if (enter.transform.position.x < 0) {
+				transform.position = (Vector2)enter.transform.position + Vector2.right;
+			} else {
+				transform.position = (Vector2)enter.transform.position - Vector2.right;
+			}
+			exit = enter.outWarpZone;
+			speed = 0.05f;
+			intelligence = startIntelligence;
 		}
-		exit = enter.outWarpZone;
-		speed = 0.05f;
-		intelligence = startIntelligence;
 	}
 	
 	void FixedUpdate () {
@@ -27,9 +29,11 @@ public class Flowerpot : Person {
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
 				GetComponent<Rigidbody2D>().MovePosition(p);
 			} else {
-				findNextDestination(exit.transform.position, true);
-				intelligence -= 2;
-				intelligence = Mathf.Max(minIntelligence, intelligence);
+				if (!levelManager.tutorial) {
+					findNextDestination(exit.transform.position, true);
+					intelligence -= 2;
+					intelligence = Mathf.Max(minIntelligence, intelligence);
+				}
 			}
 		}
 	}
