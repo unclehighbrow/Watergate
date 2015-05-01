@@ -79,6 +79,8 @@ public class TutorialManager : MonoBehaviour {
 		}
 		if (ellipsis) {
 			StartCoroutine("Ellipsis");
+		} else {
+			StopEllipsis();
 		}
 		writing = false;
 	}
