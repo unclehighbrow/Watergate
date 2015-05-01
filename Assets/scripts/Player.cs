@@ -6,6 +6,7 @@ public class Player : Person {
 
 	public bool isDeepThroat = false;
 	public GameObject deepThroatPrefab;
+	public GameObject scoreNotifPrefab;
 	public float maxIdleTime = 5;
 	public float idleTime = 0;
 
@@ -70,6 +71,17 @@ public class Player : Person {
 		return true;
 	}
 
+	IEnumerator RemoveScoreNotif(GameObject scoreNotif) {
+		yield return new WaitForSeconds(2);
+		Destroy(scoreNotif);
+	}
+
+	void ScoreNotif(int score) {
+		GameObject scoreNotif = (GameObject)Instantiate(scoreNotifPrefab, transform.position, Quaternion.identity);
+		scoreNotif.GetComponent<TextMesh>().text = "" + score;
+		StartCoroutine(RemoveScoreNotif(scoreNotif));
+	}
+
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.gameObject.CompareTag("pellet")) {
 			Destroy(col.gameObject);
@@ -82,7 +94,9 @@ public class Player : Person {
 			if (!burglar.GetComponent<Animator>().GetBool("dead") && !animator.GetBool("dead")) {
 				if (burglar.GetComponent<Animator>().GetBool("scare")) {
 					burglar.Die();
-					GameSingleton.Instance.score += (100 * levelManager.burglarsEatenInScareMode);
+					int bonus = (int)(100 * Mathf.Pow(2, levelManager.burglarsEatenInScareMode));
+					ScoreNotif(bonus);
+					GameSingleton.Instance.score += bonus;
 					levelManager.burglarsEatenInScareMode++;
 				} else if (isDeepThroat) {
 					animator.SetBool("dead", true);

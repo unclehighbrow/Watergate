@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour {
 
 	public void Pause() {
 		Time.timeScale = 0;
-	//	pausePanel.alpha = 1;
+		pausePanel.alpha = 1;
 	}
 
 	void OnApplicationPause(bool pauseStatus) {
@@ -69,7 +69,7 @@ public class LevelManager : MonoBehaviour {
 			if (timeUntilFlowerpot > 0) {
 				timeUntilFlowerpot -= Time.deltaTime;
 				if (timeUntilFlowerpot <= 0) {
-					//Instantiate(flowerpot);
+					Instantiate(flowerpot);
 				}
 			}
 		}
@@ -88,6 +88,7 @@ public class LevelManager : MonoBehaviour {
 		foreach (Burglar burglar in burglars) {
 			burglar.EndScareMode();
 		}
+		burglarsEatenInScareMode = 0;
 	}
 
 	public void FinishDying() {
