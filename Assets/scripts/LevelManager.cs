@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour {
 	public float timeUntilFlowerpot;
 	public GameObject flowerpot;
 	public bool tutorial = false;
+	public int level;
 
 	public void Pause() {
 		Time.timeScale = 0;
@@ -51,6 +52,7 @@ public class LevelManager : MonoBehaviour {
 			GameObject.Find("resume_button").GetComponent<Button>().onClick.AddListener(()=>Resume());
 			GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
 			timeUntilFlowerpot = Random.Range(1, 2);
+			RectifyLifeUis();
 		}
      }
 
@@ -66,10 +68,12 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 			scoreUi.text = GameSingleton.Instance.score.ToString().PadLeft(5, '0');
-			if (timeUntilFlowerpot > 0) {
-				timeUntilFlowerpot -= Time.deltaTime;
-				if (timeUntilFlowerpot <= 0) {
-					Instantiate(flowerpot);
+			if (PlayerPrefs.GetInt("seenTutorial") == 2) {
+				if (timeUntilFlowerpot > 0) {
+					timeUntilFlowerpot -= Time.deltaTime;
+					if (timeUntilFlowerpot <= 0) {
+						Instantiate(flowerpot);
+					}
 				}
 			}
 		}
@@ -91,15 +95,17 @@ public class LevelManager : MonoBehaviour {
 		burglarsEatenInScareMode = 0;
 	}
 
-	public void FinishDying() {
-		GameSingleton.Instance.lives--;
-		Debug.Log ("lives: " + GameSingleton.Instance.lives);
+	public void RectifyLifeUis() {
 		for (int i = 0; i < lifeUis.Count; i++) {
 			if (i >= GameSingleton.Instance.lives) {
-				Debug.Log ("hiding: " + lifeUis[i].name);
 				lifeUis[i].GetComponent<Image>().enabled = false;
 			}
 		}
+	}
+
+	public void FinishDying() {
+		GameSingleton.Instance.lives--;
+		RectifyLifeUis();
 		GameSingleton.Instance.Die();
 
 		foreach (Burglar burglar in burglars) {

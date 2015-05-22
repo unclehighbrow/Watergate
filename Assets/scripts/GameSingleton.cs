@@ -65,8 +65,11 @@ public class GameSingleton : Singleton<GameSingleton> {
 	}
 
 	public void LoadNextLevel() {
-		if (Application.loadedLevel + 1 >= Application.levelCount - 3) { // 1 for game over, title, and tutorial
-			Application.LoadLevel(2);
+		if (PlayerPrefs.GetInt("seenTutorial") == 1) {
+			Application.LoadLevel("tutorial2");
+		}
+		if (Application.loadedLevel + 1 >= Application.levelCount - 1) { // last one is game over
+			Application.LoadLevel("level1");
 		} else {
 			Application.LoadLevel(Application.loadedLevel + 1);
 		}
@@ -80,7 +83,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 		} 
 	}
 
-	public void LoadLevel(int level) {
+	public void LoadLevel(string level) {
 		this.lives = 3;
 		this.score = 0;
 		Application.LoadLevel(level);

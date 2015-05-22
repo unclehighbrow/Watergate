@@ -6,9 +6,10 @@ public class TitleScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		int level = 1;
-		if (PlayerPrefs.GetInt("seenTutorial") == 1) {
-			level = 2;
+		PlayerPrefs.DeleteAll();
+		string level = "tutorial";
+		if (PlayerPrefs.GetInt("seenTutorial") >= 1) {
+			level = "level1";
 		}
 		GameObject.Find ("start_button")
 			.GetComponent<Button>().onClick

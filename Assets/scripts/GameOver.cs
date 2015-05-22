@@ -16,6 +16,6 @@ public class GameOver : MonoBehaviour {
 	}
 
 	public void TryAgain() {
-		GameSingleton.Instance.LoadLevel(2);
+		GameSingleton.Instance.LoadLevel("level1");
 	}
 }

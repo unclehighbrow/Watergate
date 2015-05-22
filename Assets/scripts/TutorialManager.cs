@@ -26,7 +26,7 @@ public class TutorialManager : TutorialBase {
 			yield return new WaitForEndOfFrame();
 		}
 		PlayerPrefs.SetInt("seenTutorial", 1);
-		Application.LoadLevel(2);
+		Application.LoadLevel(3);
 	}
 
 	public override void GoalHit(Goal goal) {
