@@ -107,6 +107,7 @@ public class LevelManager : MonoBehaviour {
 		GameSingleton.Instance.lives--;
 		RectifyLifeUis();
 		GameSingleton.Instance.Die();
+		burglarsEatenInScareMode = 0;
 
 		foreach (Burglar burglar in burglars) {
 			burglar.EndScareMode();
