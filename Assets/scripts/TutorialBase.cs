@@ -70,13 +70,11 @@ public class TutorialBase : MonoBehaviour {
 				bool newLine = false;
 				if (i + 3 <= words.Length) {
 					shadowText.text += words[i + 2] + " ";
-					if (shadowText.cachedTextGenerator.lineCount > currentLines) {
-						currentLines = shadowText.cachedTextGenerator.lineCount;
-						newLine = true;
-					}	
-				} else {
+				} 
+				if (shadowText.cachedTextGenerator.lineCount > currentLines) {
+					currentLines = shadowText.cachedTextGenerator.lineCount;
 					newLine = true;
-				}
+				}	
 				
 				foreach (char letter in word) {
 					uiText.text += letter;
