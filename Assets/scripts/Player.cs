@@ -16,6 +16,7 @@ public class Player : Person {
 			if (idleTime > maxIdleTime) {
 				foreach (Burglar burglar in levelManager.burglars) {
 					if (!burglar.GetComponent<Animator>().GetBool("scare") && !burglar.GetComponent<Animator>().GetBool("dead")) {
+						burglar.intelligence += 2;
 						burglar.hardTarget = this;
 						break;
 					}
@@ -82,6 +83,14 @@ public class Player : Person {
 		StartCoroutine(RemoveScoreNotif(scoreNotif));
 	}
 
+	void KillBurglar(Burglar burglar) {
+		burglar.Die();
+		int bonus = (int)(100 * Mathf.Pow(2, levelManager.burglarsEatenInScareMode));
+		ScoreNotif(bonus);
+		GameSingleton.Instance.score += bonus;
+		levelManager.burglarsEatenInScareMode++;
+	}
+
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.gameObject.CompareTag("pellet")) {
 			Destroy(col.gameObject);
@@ -93,14 +102,10 @@ public class Player : Person {
 			Burglar burglar = col.gameObject.GetComponent<Burglar>();
 			if (!burglar.GetComponent<Animator>().GetBool("dead") && !animator.GetBool("dead")) {
 				if (burglar.GetComponent<Animator>().GetBool("scare")) {
-					burglar.Die();
-					int bonus = (int)(100 * Mathf.Pow(2, levelManager.burglarsEatenInScareMode));
-					ScoreNotif(bonus);
-					GameSingleton.Instance.score += bonus;
-					levelManager.burglarsEatenInScareMode++;
+					KillBurglar(burglar);
 				} else if (isDeepThroat) {
 					animator.SetBool("dead", true);
-					burglar.Die();
+					KillBurglar(burglar);
 				} else {
 					levelManager.Die();
 				}
