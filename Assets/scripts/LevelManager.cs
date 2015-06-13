@@ -20,6 +20,8 @@ public class LevelManager : MonoBehaviour {
 	public GameObject flowerpot;
 	public bool tutorial = false;
 	public int level;
+	public int gridSizeX;
+	public int gridSizeY;
 
 	public void Pause() {
 		Time.timeScale = 0;

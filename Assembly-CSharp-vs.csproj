@@ -53,6 +53,7 @@
      <Compile Include="Assets\scripts\GameSingleton.cs" />
      <Compile Include="Assets\scripts\Goal.cs" />
      <Compile Include="Assets\scripts\LevelManager.cs" />
+     <Compile Include="Assets\scripts\Node.cs" />
      <Compile Include="Assets\scripts\Person.cs" />
      <Compile Include="Assets\scripts\Player.cs" />
      <Compile Include="Assets\scripts\Singelton.cs" />

@@ -5,12 +5,11 @@ using System.Collections.Generic;
 public class Burglar : Person {
 	public float scareModeSpeedMultiplier = .6f;
 	public float deadSpeedMultiplier = 5f;
-	public Color color;
 	public Player hardTarget;
 
 	public new void Start () {
 		base.Start();
-		GetComponent<SpriteRenderer>().color = color;
+		GetComponent<SpriteRenderer>().color = spriteColor;
 	}
 	
 	public void StartScareMode() {
@@ -26,7 +25,7 @@ public class Burglar : Person {
 	
 	public void EndScareMode() {
 		if (animator.GetBool("scare")) {
-			GetComponent<SpriteRenderer>().color = color;
+			GetComponent<SpriteRenderer>().color = spriteColor;
 			speed /= scareModeSpeedMultiplier;
 			animator.SetBool("scare", false);
 		}
@@ -37,7 +36,6 @@ public class Burglar : Person {
 			animator.SetBool("dead", true);
 			EndScareMode();
 			speed *= deadSpeedMultiplier;
-			waypointCounter = waypoints.Count - 1;
 			GetComponent<SpriteRenderer>().color = Color.white;
 		}
 	}	
@@ -45,7 +43,7 @@ public class Burglar : Person {
 	public void Undie() {
 		if (animator.GetBool("dead")) {
 			speed /= deadSpeedMultiplier;
-			GetComponent<SpriteRenderer>().color = color;
+			GetComponent<SpriteRenderer>().color = spriteColor;
 			animator.SetBool("dead", false);
 		}
 	}
@@ -56,29 +54,12 @@ public class Burglar : Person {
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.burglarSpeed);
 				GetComponent<Rigidbody2D>().MovePosition(p);
 			} else {
-				if (waypoints.Count > waypointCounter && !animator.GetBool("dead")) { // at start, follow waypoints out of the box
-					Transform waypoint = waypoints[waypointCounter];
-					if (waypoint.position == transform.position) {
-						waypointCounter += 1;
-					} else {
-						direction = waypoint.position - transform.position; // this would make a big vector if more than one space
-						destination = waypoint.position;
-					}
-				} else if (animator.GetBool("dead") && ((Vector2)transform.position == startPosition)) {
+				if (animator.GetBool("dead") && ((Vector2)transform.position == startPosition)) {
 					Undie();
 				} else {
 					Vector2 finalDestination = Vector2.zero; 
 					if (animator.GetBool("dead")) {
-						Transform waypoint = waypoints[waypointCounter];
-						if (waypoint.position == transform.position) {
-							if (waypointCounter > 0) {
-								waypointCounter -= 1;
-							} else {
-								finalDestination = startPosition;
-							}
-						} else {
-							finalDestination = waypoint.position;
-						}
+						finalDestination = startPosition;
 					} else {
 						float smallestDistance = -1;
 						Player playerToFollow = hardTarget;

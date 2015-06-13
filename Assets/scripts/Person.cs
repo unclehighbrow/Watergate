@@ -9,15 +9,39 @@ public class Person : MonoBehaviour {
 	public Vector2 startPosition;
 	public LevelManager levelManager;
 	public int intelligence;
-	public int waypointCounter = 0;
-	public List<Transform> waypoints = new List<Transform>();
 	protected Animator animator;
 	public Vector2 preference = Vector2.zero;
-	
+	Node[,] grid;
+	public Color spriteColor;
+
+	List<Vector2> path;
+
+	void OnDrawGizmos() {
+		if (path != null)  {
+			foreach (Vector2 n in path) {
+				Gizmos.color = spriteColor;
+				Gizmos.DrawCube(new Vector3(n.x, n.y, -1), Vector3.one * .7f);
+			}
+		}
+		path = new List<Vector2>();
+	}
+
+	void InitializeGrid() {
+		for (int x = 0; x < levelManager.gridSizeX; x++) {
+			for (int y = 0; y < levelManager.gridSizeY; y++) {
+				grid[x,y] = new Node(new Vector2(x,y));
+			}
+		}
+
+	}
+
 	// Use this for initialization
 	public void Start () {
 		startPosition = transform.position;
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
+		grid = new Node[levelManager.gridSizeX,levelManager.gridSizeY];
+		InitializeGrid();
+		path = new List<Vector2>();
 		animator = GetComponent<Animator>();
 	}
 	
@@ -42,22 +66,82 @@ public class Person : MonoBehaviour {
 		animator.SetFloat("x", 0f);
 		animator.SetFloat("y", 0f);
 		animator.Play("Idle");
-		waypointCounter = 0;
 	}
 
 	public void findNextDestination(Vector2 finalDestination, bool towards) {
 		if (finalDestination != Vector2.zero) {
-			Vector2 vectorToPlayer = finalDestination - (Vector2)transform.position;
+			finalDestination = new Vector2(Mathf.Round(finalDestination.x), Mathf.Round(finalDestination.y));
+
 			Vector2 primaryDirection = Vector2.zero;
 			Vector2 secondaryDirection = Vector2.zero;
+			if (towards) {
+				List<Node> open = new List<Node>();
+				HashSet<Node> closed = new HashSet<Node>();
+				open.Add(grid[Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y)]);
+				while (true) {
+					Node currentNode = open[0];
+					for (int i = 1; i < open.Count; i ++) {
+						if (open[i].fCost() < currentNode.fCost() || open[i].fCost() == currentNode.fCost() && open[i].hCost < currentNode.hCost) {
+							currentNode = open[i];
+						}
+					}
+					open.Remove(currentNode);
+					closed.Add(currentNode);
+
+					if (currentNode.position.x == Mathf.FloorToInt(finalDestination.x) && currentNode.position.y == Mathf.FloorToInt(finalDestination.y)) {
+						Node parent = currentNode.parent;
+						path.Add (currentNode.position);
+						while (parent != null) {
+							path.Add(parent.position);
+							parent = parent.parent;
+						}
+
+						Vector2 correctDestination = path[Mathf.Max(0, path.Count - 2)];
+						primaryDirection = correctDestination - (Vector2)transform.position;
+						InitializeGrid();
+						break;
+					}
+
+					List<Node> neighbors = new List<Node>();
+					if (currentNode.position.x > 0  && valid(currentNode.position, -Vector2.right)) 
+						neighbors.Add(grid[(int)currentNode.position.x - 1, (int)currentNode.position.y]);
+					if (currentNode.position.x < levelManager.gridSizeX - 1 && valid(currentNode.position, Vector2.right)) 
+						neighbors.Add(grid[(int)currentNode.position.x + 1, (int)currentNode.position.y]);
+					if (currentNode.position.y > 0 && valid(currentNode.position, -Vector2.up)) 
+						neighbors.Add(grid[(int)currentNode.position.x, (int)currentNode.position.y - 1]);
+					if (currentNode.position.y < levelManager.gridSizeY - 1 && valid(currentNode.position, Vector2.up)) 
+						neighbors.Add(grid[(int)currentNode.position.x, (int)currentNode.position.y + 1]);
+
+					foreach (Node neighbor in neighbors) {
+						if (closed.Contains(neighbor)) {
+							continue;
+						}
+						int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode.position, neighbor.position);
+						if (newMovementCostToNeighbor < neighbor.gCost || !open.Contains(neighbor)) {
+							neighbor.gCost = newMovementCostToNeighbor;
+							neighbor.hCost = GetDistance(neighbor.position, finalDestination);
+							neighbor.parent = currentNode;
+
+							if (!open.Contains(neighbor)) {
+								open.Add(neighbor);
+							}
+						}
+					}
+				}
+			}
+
+
+			Vector2 vectorToPlayer = finalDestination - (Vector2)transform.position;
 			Vector2 xDirection = vectorToPlayer.x > 0 ? Vector2.right : -Vector2.right;
 			Vector2 yDirection = vectorToPlayer.y > 0 ? Vector2.up : -Vector2.up;
 			Vector2 actualDirection = Vector2.zero;
 			if (Mathf.Abs(vectorToPlayer.x) > Mathf.Abs (vectorToPlayer.y)) { // horizontal
-				primaryDirection = xDirection;
+				if (primaryDirection == Vector2.zero)
+					primaryDirection = xDirection;
 				secondaryDirection = yDirection;
 			} else {
-				primaryDirection = yDirection;
+				if (primaryDirection == Vector2.zero)
+					primaryDirection = yDirection;
 				secondaryDirection = xDirection;
 			}
 			
@@ -66,9 +150,9 @@ public class Person : MonoBehaviour {
 				secondaryDirection = -secondaryDirection;
 			}
 			
-			if (valid (primaryDirection) && (Random.Range(1,10) <= intelligence || animator.GetBool("dead")) && primaryDirection != -direction) {
+			if ((valid(primaryDirection) && (Random.Range(1,10) <= intelligence &&  primaryDirection != -direction)) || animator.GetBool("dead")) {
 				actualDirection = primaryDirection;
-			} else if (valid(secondaryDirection) && (Random.Range(1,10) <= intelligence || animator.GetBool("dead")) && secondaryDirection != -direction) {
+			} else if (valid(secondaryDirection) && Random.Range(1,10) <= intelligence && secondaryDirection != -direction) {
 				actualDirection = secondaryDirection;
 			} else if (valid(direction)) {
 				actualDirection = direction;
@@ -86,19 +170,25 @@ public class Person : MonoBehaviour {
 		}
 	}
 
-	bool valid(Vector2 dir) {
+	public int GetDistance(Vector2 start, Vector2 end) {
+		return Mathf.RoundToInt(Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y));
+	}
+
+	bool valid (Vector2 pos, Vector2 dir) {
 		if (dir == Vector2.zero) {
 			return false;
 		}
-		Vector2 pos = (Vector2)transform.position;
 		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.6f);
 		for (int i = 0; i < hits.Length; i++) {
-			if (hits[i].transform.gameObject.tag == "wall" ||
-			    (hits[i].transform.gameObject.tag == "invisible_wall" && waypoints.Count < waypointCounter + 1)) { 
-				// you can only go through invisible wall if you're going through your waypoints
+			if (hits[i].transform.gameObject.tag == "wall") { 
 				return false;
 			}
 		}
 		return true;
+	}
+
+	bool valid(Vector2 dir) {
+		Vector2 pos = (Vector2)transform.position;
+		return valid (pos, dir);
 	}
 }
