@@ -22,6 +22,15 @@ public class LevelManager : MonoBehaviour {
 	public int level;
 	public int gridSizeX;
 	public int gridSizeY;
+//
+//	public void Start() {
+//		levelStarted = true;
+//		foreach (Burglar burglar in burglars) {
+//			Debug.Log ("die");
+//			burglar.Die();
+//		}
+//
+//	}
 
 	public void Pause() {
 		Time.timeScale = 0;
