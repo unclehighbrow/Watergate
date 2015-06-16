@@ -9,7 +9,7 @@ public class InterstitialManager : TutorialBase {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	public new void Update () {
+		base.Update();
 	}
 }

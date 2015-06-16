@@ -58,6 +58,22 @@ public class LevelManager : MonoBehaviour {
 		}
      }
 
+	void FlashBurglars() {
+		if (Mathf.FloorToInt(timer * 10) % 6 == 0) {
+			foreach (Burglar burglar in burglars) {
+				if (burglar.GetComponent<Animator>().GetBool("scare")) {
+					burglar.GetComponent<SpriteRenderer>().color = Color.white;
+				}
+			}
+		} else if (Mathf.FloorToInt(timer * 10) % 6 == 3) {
+			foreach (Burglar burglar in burglars) {
+				if (burglar.GetComponent<Animator>().GetBool("scare")) {
+					burglar.GetComponent<SpriteRenderer>().color = burglar.spriteColor;
+				}
+			}
+		}
+	}
+
 	void Update() {
 		if (levelStarted && !tutorial) {
 			if (pelletHolder.transform.childCount == 0) {
@@ -66,15 +82,7 @@ public class LevelManager : MonoBehaviour {
 			if (scareMode) {
 				timer -= Time.deltaTime;
 				if (timer < 2 && timer > 0) {
-					if (Mathf.FloorToInt(timer * 10) % 6 == 0) {
-						foreach (Burglar burglar in burglars) {
-							burglar.GetComponent<SpriteRenderer>().color = Color.white;
-						}
-					} else if (Mathf.FloorToInt(timer * 10) % 6 == 3) {
-						foreach (Burglar burglar in burglars) {
-							burglar.GetComponent<SpriteRenderer>().color = burglar.spriteColor;
-						}
-					}
+					FlashBurglars();
 				}
 				if (timer <= 0) {
 					EndScareMode();
