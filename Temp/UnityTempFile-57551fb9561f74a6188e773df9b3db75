@@ -62,6 +62,7 @@
 'Assets/scripts/GameOver.cs'
 'Assets/scripts/GameSingleton.cs'
 'Assets/scripts/Goal.cs'
+'Assets/scripts/InterstitialManager.cs'
 'Assets/scripts/LevelManager.cs'
 'Assets/scripts/Node.cs'
 'Assets/scripts/Person.cs'

@@ -14,6 +14,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public string leaderboard = "watergatedefault";
 	public bool loggedIn = false;
 	public int highScore;
+	public int stashedLevel = -1;
 
 	public void Start() {
 		highScore = PlayerPrefs.GetInt("highScore", 0);
@@ -67,19 +68,25 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public void LoadNextLevel() {
 		if (PlayerPrefs.GetInt("seenTutorial") == 1) {
 			Application.LoadLevel("tutorial2");
-		} else if (Application.loadedLevel + 1 >= Application.levelCount - 5) { // tutorial 1+2, interstitial, game over, title
-			Application.LoadLevel("level1");
+		} else if (Random.Range(1,10) == 2) {
+			Application.LoadLevel("interstitial");
+			stashedLevel = Application.loadedLevel;
 		} else {
-			Application.LoadLevel(Application.loadedLevel + 1);
+			int levelToLoad = (stashedLevel > 1 ? stashedLevel : Application.loadedLevel) + 1;
+			if (levelToLoad >= Application.levelCount - 5) { // tutorial 1+2, interstitial, game over, title
+				Application.LoadLevel("level1");
+			} else {
+				Application.LoadLevel(levelToLoad);
+			}
+			stashedLevel = -1;
 		}
+		Debug.Log ("hey i can get here");
 		playerSpeed *= playerSpeedMultiplier;
 		burglarSpeed *= burglarSpeedMultiplier;
 	}
 
-	public void Die() {
-		if (lives <= 0) {
-			Application.LoadLevel("game_over");
-		} 
+	public void GameOver() {
+		Application.LoadLevel("game_over");
 	}
 
 	public void LoadLevel(string level) {

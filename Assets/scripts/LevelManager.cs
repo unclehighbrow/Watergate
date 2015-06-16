@@ -65,6 +65,17 @@ public class LevelManager : MonoBehaviour {
 			}
 			if (scareMode) {
 				timer -= Time.deltaTime;
+				if (timer < 2 && timer > 0) {
+					if (Mathf.FloorToInt(timer * 10) % 6 == 0) {
+						foreach (Burglar burglar in burglars) {
+							burglar.GetComponent<SpriteRenderer>().color = Color.white;
+						}
+					} else if (Mathf.FloorToInt(timer * 10) % 6 == 3) {
+						foreach (Burglar burglar in burglars) {
+							burglar.GetComponent<SpriteRenderer>().color = burglar.spriteColor;
+						}
+					}
+				}
 				if (timer <= 0) {
 					EndScareMode();
 				}
@@ -108,26 +119,29 @@ public class LevelManager : MonoBehaviour {
 	public void FinishDying() {
 		GameSingleton.Instance.lives--;
 		RectifyLifeUis();
-		GameSingleton.Instance.Die();
-		burglarsEatenInScareMode = 0;
+		if (GameSingleton.Instance.lives <= 0) {
+			GameSingleton.Instance.GameOver();
+		} else {
+			burglarsEatenInScareMode = 0;
 
-		foreach (Burglar burglar in burglars) {
-			burglar.EndScareMode();
-			burglar.Undie();
-			burglar.Reset();
-		}
-		foreach (Player player in players) {
-			if (player.isDeepThroat) {
-				Destroy(player.gameObject);
-			} else {
-				player.Reset();
+			foreach (Burglar burglar in burglars) {
+				burglar.EndScareMode();
+				burglar.Undie();
+				burglar.Reset();
 			}
-		}
-		players.RemoveAll(p => p.isDeepThroat);
+			foreach (Player player in players) {
+				if (player.isDeepThroat) {
+					Destroy(player.gameObject);
+				} else {
+					player.Reset();
+				}
+			}
+			players.RemoveAll(p => p.isDeepThroat);
 
-		Flowerpot flowerpot = GameObject.FindObjectOfType<Flowerpot>();
-		if (flowerpot != null) {
-			Destroy(flowerpot.gameObject);
+			Flowerpot flowerpot = GameObject.FindObjectOfType<Flowerpot>();
+			if (flowerpot != null) {
+				Destroy(flowerpot.gameObject);
+			}
 		}
 	}
 
