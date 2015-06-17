@@ -79,10 +79,9 @@ public class GameSingleton : Singleton<GameSingleton> {
 				Application.LoadLevel(levelToLoad);
 			}
 			stashedLevel = -1;
+			playerSpeed *= playerSpeedMultiplier;
+			burglarSpeed *= burglarSpeedMultiplier;
 		}
-		Debug.Log ("hey i can get here");
-		playerSpeed *= playerSpeedMultiplier;
-		burglarSpeed *= burglarSpeedMultiplier;
 	}
 
 	public void GameOver() {

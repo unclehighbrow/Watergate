@@ -13,6 +13,12 @@ public class Person : MonoBehaviour {
 	public Vector2 preference = Vector2.zero;
 	Node[,] grid;
 	public Color spriteColor;
+	static List<Vector2> possibleDirs = new List<Vector2>{
+		new Vector2(0f,1f),
+		new Vector2(0f,-1f),
+		new Vector2(1f,0f),
+		new Vector2(-1f,0f)
+	};
 
 	List<Vector2> path;
 
@@ -175,7 +181,7 @@ public class Person : MonoBehaviour {
 	}
 
 	bool valid (Vector2 pos, Vector2 dir) {
-		if (dir == Vector2.zero) {
+		if (!possibleDirs.Contains(dir)) {
 			return false;
 		}
 		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.6f);
