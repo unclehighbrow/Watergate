@@ -85,7 +85,7 @@ public class Person : MonoBehaviour {
 			if (towards) {
 				List<Node> open = new List<Node>();
 				HashSet<Node> closed = new HashSet<Node>();
-				open.Add(grid[Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y)]);
+				open.Add(grid[Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y)]);
 				path = new List<Vector2>();
 				while (true) {
 					Node currentNode = open[0];
@@ -174,8 +174,10 @@ public class Person : MonoBehaviour {
 			} else if (valid(primaryDirection)) {
 				actualDirection = primaryDirection;
 			}
+			actualDirection = new Vector2(Mathf.Round (actualDirection.x), Mathf.Round (actualDirection.y));
 			SetDirection(actualDirection);
 			destination = (Vector2)transform.position + actualDirection;
+			destination = new Vector2(Mathf.Round (destination.x), Mathf.Round (destination.y));
 		}
 	}
 
@@ -184,8 +186,14 @@ public class Person : MonoBehaviour {
 	}
 
 	bool valid (Vector2 pos, Vector2 dir) {
+		dir = new Vector2(Mathf.Round (dir.x), Mathf.Round(dir.y));
 		if (!possibleDirs.Contains(dir)) {
 			Debug.Log ("GOT CRAZY DIRECTION: " + dir);
+			Debug.Log (transform.position);
+			foreach (Vector2 n in path) {
+				Debug.Log ("path: " + n);
+			}
+//			Debug.Break();	
 			return false;
 		}
 		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.6f);

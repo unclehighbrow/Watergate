@@ -13,7 +13,7 @@ public class Node {
 	}
 
 	public Node(Vector2 position) {
-		this.position = position;
+		this.position = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
 	}
 
 	// Use this for initialization

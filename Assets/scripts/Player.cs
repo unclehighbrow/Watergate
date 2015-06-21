@@ -16,8 +16,10 @@ public class Player : Person {
 			if (idleTime > maxIdleTime) {
 				foreach (Burglar burglar in levelManager.burglars) {
 					if (!burglar.GetComponent<Animator>().GetBool("scare") && !burglar.GetComponent<Animator>().GetBool("dead")) {
-						burglar.intelligence += 2;
-						burglar.hardTarget = this;
+						if (burglar.hardTarget == null) {
+							burglar.intelligence += 2;
+							burglar.hardTarget = this;
+						}
 						break;
 					}
 				}
