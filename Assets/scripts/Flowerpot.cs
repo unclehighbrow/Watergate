@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Flowerpot : Person {
-	WarpZone enter;
-	WarpZone exit;
+	public WarpZone enter;
+	public WarpZone exit;
 	int minIntelligence = 6;
 	int startIntelligence = 10;
 
@@ -12,11 +12,7 @@ public class Flowerpot : Person {
 		base.Start();
 		if (!levelManager.tutorial) {
 			enter = levelManager.warpZones[Random.Range(0, levelManager.warpZones.Count)];
-			if (enter.transform.position.x < 0) {
-				transform.position = (Vector2)enter.transform.position + Vector2.right;
-			} else {
-				transform.position = (Vector2)enter.transform.position - Vector2.right;
-			}
+			transform.position = enter.transform.position;
 			exit = enter.outWarpZone;
 			speed = 0.05f;
 			intelligence = startIntelligence;
