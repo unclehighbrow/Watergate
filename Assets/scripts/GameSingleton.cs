@@ -18,7 +18,6 @@ public class GameSingleton : Singleton<GameSingleton> {
 
 	public void Start() {
 		highScore = PlayerPrefs.GetInt("highScore", 0);
-		Debug.Log ("got score: " + highScore);
 		Social.localUser.Authenticate(ProcessAuthentication);
 	}
 

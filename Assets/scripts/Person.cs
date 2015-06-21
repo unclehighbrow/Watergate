@@ -24,12 +24,16 @@ public class Person : MonoBehaviour {
 
 	void OnDrawGizmos() {
 		if (path != null)  {
+			Vector2 lastN = Vector2.zero;
 			foreach (Vector2 n in path) {
 				Gizmos.color = spriteColor;
 				Gizmos.DrawCube(new Vector3(n.x, n.y, -1), Vector3.one * .7f);
+				if (lastN != Vector2.zero) {
+					Gizmos.DrawLine(lastN, n);
+				}
+				lastN = n;
 			}
 		}
-		path = new List<Vector2>();
 	}
 
 	void InitializeGrid() {
@@ -38,7 +42,6 @@ public class Person : MonoBehaviour {
 				grid[x,y] = new Node(new Vector2(x,y));
 			}
 		}
-
 	}
 
 	// Use this for initialization
@@ -47,7 +50,6 @@ public class Person : MonoBehaviour {
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
 		grid = new Node[levelManager.gridSizeX,levelManager.gridSizeY];
 		InitializeGrid();
-		path = new List<Vector2>();
 		animator = GetComponent<Animator>();
 	}
 	
@@ -84,6 +86,7 @@ public class Person : MonoBehaviour {
 				List<Node> open = new List<Node>();
 				HashSet<Node> closed = new HashSet<Node>();
 				open.Add(grid[Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y)]);
+				path = new List<Vector2>();
 				while (true) {
 					Node currentNode = open[0];
 					for (int i = 1; i < open.Count; i ++) {
@@ -182,6 +185,7 @@ public class Person : MonoBehaviour {
 
 	bool valid (Vector2 pos, Vector2 dir) {
 		if (!possibleDirs.Contains(dir)) {
+			Debug.Log ("GOT CRAZY DIRECTION: " + dir);
 			return false;
 		}
 		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.6f);

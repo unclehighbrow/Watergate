@@ -16,6 +16,8 @@ public class GameOver : MonoBehaviour {
 	}
 
 	public void TryAgain() {
+		GameSingleton.Instance.playerSpeed = 1f;
+		GameSingleton.Instance.burglarSpeed = 1f;
 		GameSingleton.Instance.LoadLevel("level1");
 	}
 }
