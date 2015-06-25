@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SocialPlatforms;
@@ -15,6 +15,27 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public bool loggedIn = false;
 	public int highScore;
 	public int stashedLevel = -1;
+
+	public float deviceWidth;
+	public float deviceHeight;
+
+	void Awake () {
+		#if UNITY_EDITOR
+		deviceWidth = GetGameView().x;
+		deviceHeight = GetGameView().y;
+		#else
+		deviceWidth = Screen.width;
+		deviceHeight = Screen.height;
+		#endif
+	}
+
+	private Vector2 GetGameView() {
+		System.Type T = System.Type.GetType("UnityEditor.GameView,UnityEditor");
+		System.Reflection.MethodInfo getSizeOfMainGameView =
+			T.GetMethod("GetSizeOfMainGameView",System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+		System.Object resolution = getSizeOfMainGameView.Invoke(null, null);
+		return (Vector2)resolution;
+	}
 
 	public void Start() {
 		highScore = PlayerPrefs.GetInt("highScore", 0);

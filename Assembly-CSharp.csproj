@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\scripts\Burglar.cs" />
-     <Compile Include="Assets\scripts\CameraController.cs" />
      <Compile Include="Assets\scripts\Flowerpot.cs" />
      <Compile Include="Assets\scripts\GameOver.cs" />
      <Compile Include="Assets\scripts\GameSingleton.cs" />

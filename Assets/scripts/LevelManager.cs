@@ -22,15 +22,27 @@ public class LevelManager : MonoBehaviour {
 	public int level;
 	public int gridSizeX;
 	public int gridSizeY;
-//
-//	public void Start() {
-//		levelStarted = true;
-//		foreach (Burglar burglar in burglars) {
-//			Debug.Log ("die");
-//			burglar.Die();
-//		}
-//
-//	}
+
+	public List<float> cameraSizes = new List<float>();
+	static List<float> screenRatios = new List<float> {3f/2f, 16f/9f, 4f/3f};
+	//													1.5  1.77 1.33
+
+	public void Start() {
+		if (cameraSizes != null && cameraSizes.Count > 0) {
+			float currentRatio = GameSingleton.Instance.deviceHeight / GameSingleton.Instance.deviceWidth;
+			float bestDiff = 1000;
+			int bestRatio = 1;
+			for (int i = 0; i < screenRatios.Count; i++) {
+				float screenRatio = screenRatios[i];
+				float currentDiff = Mathf.Abs(screenRatio - currentRatio);
+				if (currentDiff < bestDiff) {
+					bestRatio = i;
+					bestDiff = currentDiff;
+				}
+			}
+			Camera.main.orthographicSize = cameraSizes[bestRatio];
+		}
+	}
 
 	public void Pause() {
 		Time.timeScale = 0;
