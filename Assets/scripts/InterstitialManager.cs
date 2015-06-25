@@ -4,7 +4,8 @@ using System.Collections;
 public class InterstitialManager : TutorialBase {
 
 	// Use this for initialization
-	void Start () {
+	public new void Start () {
+		base.Start ();
 		StartCoroutine(DisplayLine("Here's a funny thing!", bernsteinSprite, true));
 	}
 	

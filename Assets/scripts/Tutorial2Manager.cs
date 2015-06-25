@@ -7,7 +7,8 @@ public class Tutorial2Manager : TutorialBase {
 
 
 	// Use this for initialization
-	void Start () {
+	public new void Start () {
+		base.Start();
 		StartCoroutine(DisplayLine("I'm Deep Throat! If you get a flowerpot, I'm your third guy!", deepThroatSprite, false));
 	}
 	

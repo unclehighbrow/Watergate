@@ -28,19 +28,27 @@ public class LevelManager : MonoBehaviour {
 	//													1.5  1.77 1.33
 
 	public void Start() {
-		if (cameraSizes != null && cameraSizes.Count > 0) {
-			float currentRatio = GameSingleton.Instance.deviceHeight / GameSingleton.Instance.deviceWidth;
-			float bestDiff = 1000;
-			int bestRatio = 1;
-			for (int i = 0; i < screenRatios.Count; i++) {
-				float screenRatio = screenRatios[i];
-				float currentDiff = Mathf.Abs(screenRatio - currentRatio);
-				if (currentDiff < bestDiff) {
-					bestRatio = i;
-					bestDiff = currentDiff;
-				}
+		float currentRatio = GameSingleton.Instance.deviceHeight / GameSingleton.Instance.deviceWidth;
+		float bestDiff = 1000;
+		int bestRatio = 1;
+		for (int i = 0; i < screenRatios.Count; i++) {
+			float screenRatio = screenRatios[i];
+			float currentDiff = Mathf.Abs(screenRatio - currentRatio);
+			if (currentDiff < bestDiff) {
+				bestRatio = i;
+				bestDiff = currentDiff;
 			}
+		}
+
+		if (cameraSizes != null && cameraSizes.Count > 0) { // for most levels
 			Camera.main.orthographicSize = cameraSizes[bestRatio];
+		}
+
+		if (tutorial && bestRatio == 2) {
+			CanvasScaler canvasScaler = GameObject.FindObjectOfType<CanvasScaler>();
+			Vector2 referenceResolution = canvasScaler.referenceResolution;
+			referenceResolution.x = 900;
+			canvasScaler.referenceResolution = referenceResolution;
 		}
 	}
 

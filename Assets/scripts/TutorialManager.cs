@@ -47,7 +47,8 @@ public class TutorialManager : TutorialBase {
 
 	
 	// Use this for initialization
-	void Start () {
+	public new void Start () {
+		base.Start();
 		StartCoroutine(DisplayLine("Hi, I'm Woodward. Swipe on me to get out of this maze! I've got reporting to do!", woodwardSprite, false));
 		wallHolder1.SetActive(true);
 		wallHolder2.SetActive(false);

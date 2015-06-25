@@ -26,6 +26,10 @@ public class TutorialBase : MonoBehaviour {
 	public GameObject tutorialArrowW;
 	public GameObject tutorialArrowB;
 
+	public void Start() {
+
+	}
+
 	public void Update() {
 		// mouse
 		if (Input.GetMouseButtonDown(0)) {
