@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class TutorialManager : TutorialBase {
 
 	IEnumerator StartSecondPart() {
-		StopEllipsis();
+		StopPointer();
 		while (!next) {
 			yield return new WaitForEndOfFrame();
 		}

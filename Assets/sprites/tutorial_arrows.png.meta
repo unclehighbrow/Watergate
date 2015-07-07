@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 6934b097d35db43b4a74b1e9a94ea725
-timeCreated: 1425770503
+timeCreated: 1436302902
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,7 @@ TextureImporter:
     21300008: tutorial_arrows_4
     21300010: tutorial_arrows_5
     21300012: tutorial_arrows_6
+    21300014: hand_pointer
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -33,7 +34,7 @@ TextureImporter:
   cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -2
   maxTextureSize: 2048
   textureSettings:
     filterMode: 0
@@ -125,6 +126,16 @@ TextureImporter:
         height: 128
       alignment: 9
       pivot: {x: .5, y: .0625}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hand_pointer
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 0
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TutorialBase : MonoBehaviour {
 	public Text uiText;
 	public Text shadowText;
-	public Text ellipsisText;
+	public Image pointer;
 	
 	protected int currentLines;
 	protected bool next = false;
@@ -40,20 +40,20 @@ public class TutorialBase : MonoBehaviour {
 		for (int i = 0 ; i < Input.touchCount; i++) {
 			Touch touch = touches[i];
 			if (touch.phase == TouchPhase.Began) {
-				StopEllipsis();
+				StopPointer();
 				next = true;
 			}
 		}
 
 	}
 	
-	public void StopEllipsis() {
-		StopCoroutine("Ellipsis");
-		ellipsisText.text = "";
+	public void StopPointer() {
+		StopCoroutine("Pointer");
+		pointer.gameObject.SetActive(false);
 	}
 	
-	public IEnumerator DisplayLine(string text, Sprite sprite, bool ellipsis) {
-		StopEllipsis();
+	public IEnumerator DisplayLine(string text, Sprite sprite, bool pointer) {
+		StopPointer();
 		while (writing) {
 			yield return new WaitForEndOfFrame();
 		}
@@ -93,10 +93,10 @@ public class TutorialBase : MonoBehaviour {
 				}
 			}
 		}
-		if (ellipsis) {
-			StartCoroutine("Ellipsis");
+		if (pointer) {
+			StartCoroutine("Pointer");
 		} else {
-			StopEllipsis();
+			StopPointer();
 		}
 		writing = false;
 	}
@@ -104,13 +104,10 @@ public class TutorialBase : MonoBehaviour {
 	public virtual void GoalHit(Goal goal) {
 	}
 	
-	public IEnumerator Ellipsis() {
+	public IEnumerator Pointer() {
 		while (true) {
-			ellipsisText.text += ".";
-			if (ellipsisText.text.Length == 4) {
-				ellipsisText.text = "";
-			}
-			yield return new WaitForSeconds(.3f);
+			pointer.gameObject.SetActive(!pointer.gameObject.activeSelf);
+			yield return new WaitForSeconds(.7f);
 		}
 	}
 }

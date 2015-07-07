@@ -55,7 +55,7 @@ public class LevelManager : MonoBehaviour {
 	public bool LevelStarted {
 		get { return _levelStarted; }
 		set {
-			if (pelletHolder.transform.childCount != 0 || value == false) {
+			if (pelletHolder == null || pelletHolder.transform.childCount != 0 || value == false) {
 				_levelStarted = value;
 			}
 		}
@@ -114,11 +114,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	IEnumerator LoadNextLevel() {
-		int i = 0;
-		while (i < 2) {
-			i++;
-			yield return new WaitForSeconds(1);
-		}
+		yield return new WaitForSeconds(3);
 		GameSingleton.Instance.LoadNextLevel();
 	}
 	
