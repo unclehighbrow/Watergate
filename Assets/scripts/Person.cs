@@ -19,7 +19,6 @@ public class Person : MonoBehaviour {
 		new Vector2(1f,0f),
 		new Vector2(-1f,0f)
 	};
-
 	List<Vector2> path;
 
 	void OnDrawGizmos() {

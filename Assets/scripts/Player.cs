@@ -11,7 +11,7 @@ public class Player : Person {
 	public float idleTime = 0;
 
 	void Update() {
-		if (levelManager.levelStarted) {
+		if (levelManager.LevelStarted) {
 			idleTime += Time.deltaTime;
 			if (idleTime > maxIdleTime) {
 				foreach (Burglar burglar in levelManager.burglars) {
@@ -28,7 +28,7 @@ public class Player : Person {
 	}
 
 	void FixedUpdate () {
-		if (levelManager.levelStarted) {
+		if (levelManager.LevelStarted && !animator.GetBool("dead")) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.playerSpeed);
 				GetComponent<Rigidbody2D>().MovePosition(p);
@@ -124,7 +124,7 @@ public class Player : Person {
 
 	public void applyDirection(Vector2 newDirection) {
 		if (!animator.GetBool("dead")) {
-			levelManager.levelStarted = true;
+			levelManager.LevelStarted = true;
 			if (newDirection == -this.direction) { // quick turn
 				destination = (destination + newDirection);
 				SetDirection(newDirection);

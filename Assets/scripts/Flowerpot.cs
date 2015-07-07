@@ -20,7 +20,7 @@ public class Flowerpot : Person {
 	}
 	
 	void FixedUpdate () {
-		if (levelManager.levelStarted) {
+		if (levelManager.LevelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed);
 				GetComponent<Rigidbody2D>().MovePosition(p);

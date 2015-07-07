@@ -21,6 +21,9 @@ public class Burglar : Person {
 			animator.SetBool("scare", true);
 			GetComponent<SpriteRenderer>().color = Color.white;
 		}
+		if (animator.GetBool("scare")) {
+			GetComponent<SpriteRenderer>().color = Color.white;
+		}
 	}
 	
 	public void EndScareMode() {
@@ -49,7 +52,7 @@ public class Burglar : Person {
 	}
 	
 	void FixedUpdate () {
-		if (levelManager.levelStarted) {
+		if (levelManager.LevelStarted) {
 			if (destination != Vector2.zero && (Vector2)transform.position != destination) { // go to destination
 				Vector2 p = Vector2.MoveTowards(transform.position, destination, speed * GameSingleton.Instance.burglarSpeed);
 				GetComponent<Rigidbody2D>().MovePosition(p);

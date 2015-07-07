@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class LevelManager : MonoBehaviour {
 	GameObject pelletHolder = null;
 	public bool scareMode = false;
-	public bool levelStarted = false;
 	float timer;
 	float timerStart = 10;
 	public List<Player> players;
@@ -22,6 +21,7 @@ public class LevelManager : MonoBehaviour {
 	public int level;
 	public int gridSizeX;
 	public int gridSizeY;
+	private bool _levelStarted = false;
 
 	public List<float> cameraSizes = new List<float>();
 	static List<float> screenRatios = new List<float> {3f/2f, 16f/9f, 4f/3f};
@@ -51,6 +51,16 @@ public class LevelManager : MonoBehaviour {
 			canvasScaler.referenceResolution = referenceResolution;
 		}
 	}
+	
+	public bool LevelStarted {
+		get { return _levelStarted; }
+		set {
+			if (pelletHolder.transform.childCount != 0 || value == false) {
+				_levelStarted = value;
+			}
+		}
+	}
+
 
 	public void Pause() {
 		Time.timeScale = 0;
@@ -58,7 +68,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void OnApplicationPause(bool pauseStatus) {
-		if (pauseStatus) {
+		if (pauseStatus && !tutorial) {
 			Pause();
 		}
 	}
@@ -103,10 +113,20 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
+	IEnumerator LoadNextLevel() {
+		int i = 0;
+		while (i < 2) {
+			i++;
+			yield return new WaitForSeconds(1);
+		}
+		GameSingleton.Instance.LoadNextLevel();
+	}
+	
 	void Update() {
-		if (levelStarted && !tutorial) {
+		if (LevelStarted && !tutorial) {
 			if (pelletHolder.transform.childCount == 0) {
-				GameSingleton.Instance.LoadNextLevel();
+				LevelStarted = false;
+				StartCoroutine(LoadNextLevel());
 			}
 			if (scareMode) {
 				timer -= Time.deltaTime;
@@ -137,7 +157,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	void EndScareMode() {
+	public void EndScareMode() {
 		scareMode = false;
 		foreach (Burglar burglar in burglars) {
 			burglar.EndScareMode();
@@ -183,7 +203,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void Die() {
-		levelStarted = false;
+		LevelStarted = false;
 		foreach (Player player in players) {
 			player.gameObject.GetComponent<Animator>().SetBool("dead", true);
 		}
