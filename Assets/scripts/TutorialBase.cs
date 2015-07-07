@@ -13,6 +13,8 @@ public class TutorialBase : MonoBehaviour {
 	protected bool writing = false;
 	protected int mode = 1;
 	protected int goalsHit = 0;
+	protected float writingDelayDefault = .02f;
+	protected float writingDelay = .02f;
 	
 	public GameObject wallHolder1;
 	public GameObject wallHolder2;
@@ -31,20 +33,30 @@ public class TutorialBase : MonoBehaviour {
 	}
 
 	public void Update() {
+		bool click = false;
 		// mouse
+#if UNITY_EDITOR
 		if (Input.GetMouseButtonDown(0)) {
-			next = true;
+			click = true;
 		}
+#endif
 		// touch
 		Touch[] touches = Input.touches;
 		for (int i = 0 ; i < Input.touchCount; i++) {
 			Touch touch = touches[i];
 			if (touch.phase == TouchPhase.Began) {
+				click = true;
+			}
+		}
+		if (click) {
+			if (writing) {
+				writingDelay = 0f;
+			} else {
+				writingDelay = writingDelayDefault;
 				StopPointer();
 				next = true;
 			}
 		}
-
 	}
 	
 	public void StopPointer() {
@@ -82,7 +94,7 @@ public class TutorialBase : MonoBehaviour {
 				
 				foreach (char letter in word) {
 					uiText.text += letter;
-					yield return new WaitForSeconds(.02f);
+					yield return new WaitForSeconds(writingDelay);
 				}
 				
 				if (newLine) {
