@@ -88,7 +88,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public void LoadNextLevel() {
 		if (PlayerPrefs.GetInt("seenTutorial") == 1) {
 			Application.LoadLevel("tutorial2");
-		} else if (Random.Range(1,10) == 2) {
+		} else if (Random.Range(1,10) == 2 && stashedLevel == -1) {
 			Application.LoadLevel("interstitial");
 			stashedLevel = Application.loadedLevel;
 		} else {

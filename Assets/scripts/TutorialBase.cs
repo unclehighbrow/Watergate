@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 
 public class TutorialBase : MonoBehaviour {
+
 	public Text uiText;
 	public Text shadowText;
 	public Image pointer;
@@ -27,6 +28,8 @@ public class TutorialBase : MonoBehaviour {
 	public Sprite deepThroatSprite;
 	public GameObject tutorialArrowW;
 	public GameObject tutorialArrowB;
+
+	protected int Line = 0;
 
 	public void Start() {
 
@@ -55,6 +58,7 @@ public class TutorialBase : MonoBehaviour {
 				writingDelay = writingDelayDefault;
 				StopPointer();
 				next = true;
+				Line++;
 			}
 		}
 	}
