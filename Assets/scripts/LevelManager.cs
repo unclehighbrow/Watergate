@@ -78,6 +78,10 @@ public class LevelManager : MonoBehaviour {
 		Time.timeScale = 1;
 	}
 
+	void SetFlowerpotTimer() {
+		timeUntilFlowerpot = Random.Range(1, 10);
+	}
+
 	void Awake() {
 		pelletHolder = GameObject.Find("pellet_holder");
 		players = new List<Player>(GameObject.FindObjectsOfType<Player>());
@@ -92,7 +96,7 @@ public class LevelManager : MonoBehaviour {
 			pausePanel = GameObject.Find("pause_panel").GetComponent<CanvasGroup>(); 
 			GameObject.Find("resume_button").GetComponent<Button>().onClick.AddListener(()=>Resume());
 			GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
-			timeUntilFlowerpot = Random.Range(1, 2);
+			SetFlowerpotTimer();
 			RectifyLifeUis();
 		}
      }
@@ -114,7 +118,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	IEnumerator LoadNextLevel() {
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(2);
 		GameSingleton.Instance.LoadNextLevel();
 	}
 	
@@ -195,6 +199,7 @@ public class LevelManager : MonoBehaviour {
 			if (flowerpot != null) {
 				Destroy(flowerpot.gameObject);
 			}
+			SetFlowerpotTimer();
 		}
 	}
 

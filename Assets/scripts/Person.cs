@@ -187,13 +187,15 @@ public class Person : MonoBehaviour {
 	bool valid (Vector2 pos, Vector2 dir) {
 		dir = new Vector2(Mathf.Round (dir.x), Mathf.Round(dir.y));
 		if (!possibleDirs.Contains(dir)) {
-			Debug.Log ("GOT CRAZY DIRECTION: " + dir);
-			Debug.Log (transform.position);
-			foreach (Vector2 n in path) {
-				Debug.Log ("path: " + n);
-			}
-//			Debug.Break();	
 			return false;
+		}
+		Vector2 dest = pos + dir;
+		if (!animator.GetBool("dead")) {
+			foreach (Burglar burglar in levelManager.burglars) {
+				if (dest == burglar.startPosition) {
+					return false;
+				}
+			}
 		}
 		RaycastHit2D[] hits = Physics2D.LinecastAll(pos, pos + dir*.6f);
 		for (int i = 0; i < hits.Length; i++) {

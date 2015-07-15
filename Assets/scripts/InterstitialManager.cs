@@ -3,18 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class InterstitialManager : TutorialBase {
-	public DialogObject[] scriptHolder;
+	public Conversation[] scriptHolder;
 
 	// Use this for initialization
 	public new void Start () {
 		base.Start ();
-		List<DialogObject> script = new List<DialogObject>();
-		script.Add(new DialogObject("First funny thing", bernsteinSprite));
-		script.Add(new DialogObject("second funny thing", woodwardSprite));
-		for (int i = 0; i<script.Count; i++) {
-			StartCoroutine(DoDisplayLine(script[i].text, script[i].sprite, i));
+		Conversation conversation = scriptHolder[Random.Range(0,scriptHolder.Length)];
+		for (int i = 0; i < conversation.DialogObjects.Length; i++) {
+			StartCoroutine(DoDisplayLine(conversation.DialogObjects[i].text, conversation.DialogObjects[i].sprite, i));
 		}
-		StartCoroutine(NextLevel (script.Count));
+		StartCoroutine(NextLevel(conversation.DialogObjects.Length));
 	}
 
 	IEnumerator NextLevel(int scriptSize) {
@@ -33,8 +31,7 @@ public class InterstitialManager : TutorialBase {
 		bool done = false;
 		while (!done) {
 			if (line == Line) {
-				Debug.Log ("staring up: " + line);
-				StartCoroutine(DisplayLine(text, bernsteinSprite, true));
+				StartCoroutine(DisplayLine(text, sprite, true));
 				done = true;
 			} else {
 				yield return new WaitForEndOfFrame();
