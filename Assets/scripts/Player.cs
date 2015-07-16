@@ -118,8 +118,8 @@ public class Player : Person {
 			newDeepThroat.direction = -direction;
 			newDeepThroat.startPosition = destination;
 			levelManager.players.Add(newDeepThroat);
-			ScoreNotif(200);
-			GameSingleton.Instance.score += 200;
+			ScoreNotif(500);
+			GameSingleton.Instance.score += 500;
 			Destroy(col.gameObject);
 		}
 	}
