@@ -93,7 +93,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 			stashedLevel = Application.loadedLevel;
 		} else {
 			int levelToLoad = (stashedLevel > 1 ? stashedLevel : Application.loadedLevel) + 1;
-			if (levelToLoad >= Application.levelCount - 5) { // tutorial 1+2, interstitial, game over, title
+			if (levelToLoad > Application.levelCount - 5) { // tutorial 1+2, interstitial, game over, title
 				Application.LoadLevel("level1");
 			} else {
 				Application.LoadLevel(levelToLoad);

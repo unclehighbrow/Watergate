@@ -14,7 +14,7 @@ public class Flowerpot : Person {
 			enter = levelManager.warpZones[Random.Range(0, levelManager.warpZones.Count)];
 			transform.position = enter.transform.position;
 			exit = enter.outWarpZone;
-			speed = 0.05f;
+			speed = 0.045f;
 			intelligence = startIntelligence;
 		}
 	}
