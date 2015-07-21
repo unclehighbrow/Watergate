@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{99CEA7D8-0623-DDAC-0661-32D60A1521C5}") = "Watergate", "Assembly-CSharp.csproj", "{C17C3BBF-2C4D-3EB3-6A4D-DFAB98038B3C}"
+EndProject
+Project("{99CEA7D8-0623-DDAC-0661-32D60A1521C5}") = "Watergate", "Assembly-CSharp-Editor.csproj", "{F457034A-CBEF-D19C-46CC-3DC2AF300624}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C17C3BBF-2C4D-3EB3-6A4D-DFAB98038B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C17C3BBF-2C4D-3EB3-6A4D-DFAB98038B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C17C3BBF-2C4D-3EB3-6A4D-DFAB98038B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C17C3BBF-2C4D-3EB3-6A4D-DFAB98038B3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F457034A-CBEF-D19C-46CC-3DC2AF300624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F457034A-CBEF-D19C-46CC-3DC2AF300624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F457034A-CBEF-D19C-46CC-3DC2AF300624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F457034A-CBEF-D19C-46CC-3DC2AF300624}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+																																																																																																																																	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabWidth = 4
+		$3.EolMarker = Unix
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+	EndGlobalSection
+
+EndGlobal
