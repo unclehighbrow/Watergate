@@ -90,6 +90,7 @@ public class LevelManager : MonoBehaviour {
 		warpZones = new List<WarpZone>(GameObject.FindObjectsOfType<WarpZone>());
 		if (!tutorial) { 
 			scoreUi = GameObject.Find ("score").GetComponent<Text>();
+			scoreUi.text = GameSingleton.Instance.score.ToString().PadLeft(5, '0');
 			lifeUis = new List<GameObject>(GameObject.FindGameObjectsWithTag("life"));
 			lifeUis.Sort(Util.SortByName);
 			lifeUis.Reverse();
