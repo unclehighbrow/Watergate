@@ -1,13 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/Flowerpot.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/GameOver.cs">
     <Files>
-      <File FileName="Assets/scripts/Burglar.cs" Line="86" Column="3" />
-      <File FileName="Assets/scripts/Flowerpot.cs" Line="30" Column="24" />
-      <File FileName="Assets/scripts/LevelManager.cs" Line="82" Column="41" />
-      <File FileName="Assets/scripts/Person.cs" Line="61" Column="10" />
-      <File FileName="Assets/scripts/Player.cs" Line="43" Column="3" />
-      <File FileName="Assets/scripts/GameSingleton.cs" Line="102" Column="41" />
+      <File FileName="Assets/scripts/GameSingleton.cs" Line="71" Column="2" />
+      <File FileName="Assets/scripts/GameOver.cs" Line="17" Column="68" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -6,7 +6,6 @@ public class TitleScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		PlayerPrefs.DeleteAll();
 		string level = "tutorial";
 		if (PlayerPrefs.GetInt("seenTutorial") >= 1) {
 			level = "level1";

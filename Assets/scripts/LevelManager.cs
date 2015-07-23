@@ -7,7 +7,6 @@ public class LevelManager : MonoBehaviour {
 	GameObject pelletHolder = null;
 	public bool scareMode = false;
 	float timer;
-	float timerStart = 10;
 	public List<Player> players;
 	public List<Burglar> burglars = new List<Burglar>();
 	public List<WarpZone> warpZones;
@@ -152,7 +151,7 @@ public class LevelManager : MonoBehaviour {
 
 	public void StartScareMode() {
 		scareMode = true;
-		timer = timerStart;
+		timer = GameSingleton.Instance.scareTimer;
 		foreach (Burglar burglar in burglars) {
 			burglar.StartScareMode();
 		}

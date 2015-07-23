@@ -9,8 +9,10 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public int lives = 3;
 	public float playerSpeed = 1f;
 	public float burglarSpeed = 1f;
+	public float scareTimer = 10f;
 	public float playerSpeedMultiplier = 1.1f;
 	public float burglarSpeedMultiplier = 1.2f;
+	public float scareTimerMultipler = .9f;
 	public string leaderboard = "watergatedefault";
 	public bool loggedIn = false;
 	public int highScore;
@@ -69,7 +71,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public bool RecordScore() {
 		bool ret = false;
 		if (score > highScore) {
-			ret = true;
+			ret = highScore != 0;
 			highScore = score;
 			PlayerPrefs.SetInt("highScore", score);
 		}
@@ -101,6 +103,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 			stashedLevel = -1;
 			playerSpeed *= playerSpeedMultiplier;
 			burglarSpeed *= burglarSpeedMultiplier;
+			scareTimer *= scareTimerMultipler;
 		}
 	}
 
