@@ -4,11 +4,18 @@ using System.Collections.Generic;
 
 public class InterstitialManager : TutorialBase {
 	public Conversation[] scriptHolder;
+	public Conversation endGame;
 
 	// Use this for initialization
 	public new void Start () {
 		base.Start ();
-		Conversation conversation = scriptHolder[Random.Range(0,scriptHolder.Length)];
+		Conversation conversation;
+		if (GameSingleton.Instance.justBeatTheGame) {
+			conversation = endGame;
+		} else {
+			conversation = scriptHolder[Random.Range(0,scriptHolder.Length)];
+		}
+
 		for (int i = 0; i < conversation.DialogObjects.Length; i++) {
 			StartCoroutine(DoDisplayLine(conversation.DialogObjects[i].text, conversation.DialogObjects[i].sprite, i));
 		}

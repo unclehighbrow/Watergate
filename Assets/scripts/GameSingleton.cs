@@ -18,6 +18,8 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public int highScore;
 	public int stashedLevel = -1;
 
+	public bool justBeatTheGame = false;
+
 	public float deviceWidth;
 	public float deviceHeight;
 
@@ -88,26 +90,31 @@ public class GameSingleton : Singleton<GameSingleton> {
 	}
 
 	public void LoadNextLevel() {
+		justBeatTheGame = false;
+		int levelToLoad = (stashedLevel >= 0 ? stashedLevel : Application.loadedLevel) + 1;
+
 		if (PlayerPrefs.GetInt("seenTutorial") == 1) {
 			Application.LoadLevel("tutorial2");
-		} else if (Random.Range(1,10) == 2 && stashedLevel == -1) {
+		} else if (Random.Range(1,30) == 2 && stashedLevel == -1 && levelToLoad <= Application.levelCount - 5) {  
 			Application.LoadLevel("interstitial");
 			stashedLevel = Application.loadedLevel;
 		} else {
-			int levelToLoad = (stashedLevel > 1 ? stashedLevel : Application.loadedLevel) + 1;
 			if (levelToLoad > Application.levelCount - 5) { // tutorial 1+2, interstitial, game over, title
-				Application.LoadLevel("level1");
+				justBeatTheGame = true;
+				stashedLevel = 0;
+				Application.LoadLevel("interstitial");
 			} else {
 				Application.LoadLevel(levelToLoad);
+				stashedLevel = -1;
+				playerSpeed *= playerSpeedMultiplier;
+				burglarSpeed *= burglarSpeedMultiplier;
+				scareTimer *= scareTimerMultipler;
 			}
-			stashedLevel = -1;
-			playerSpeed *= playerSpeedMultiplier;
-			burglarSpeed *= burglarSpeedMultiplier;
-			scareTimer *= scareTimerMultipler;
 		}
 	}
 
 	public void GameOver() {
+		stashedLevel = -1;
 		Application.LoadLevel("game_over");
 	}
 
