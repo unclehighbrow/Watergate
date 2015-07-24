@@ -1,0 +1,20 @@
+﻿#pragma once
+#include <stdint.h>
+// System.Collections.Hashtable
+struct Hashtable_t56;
+// LevelManager
+struct LevelManager_t36;
+// UnityEngine.MonoBehaviour
+#include "UnityEngine_UnityEngine_MonoBehaviour.h"
+// UnityEngine.Vector3
+#include "UnityEngine_UnityEngine_Vector3.h"
+// WatergateControl
+struct  WatergateControl_t57  : public MonoBehaviour_t16
+{
+	// System.Collections.Hashtable WatergateControl::touchMap
+	Hashtable_t56 * ___touchMap_2;
+	// UnityEngine.Vector3 WatergateControl::firstMousePosition
+	Vector3_t58  ___firstMousePosition_3;
+	// LevelManager WatergateControl::levelManager
+	LevelManager_t36 * ___levelManager_4;
+};
