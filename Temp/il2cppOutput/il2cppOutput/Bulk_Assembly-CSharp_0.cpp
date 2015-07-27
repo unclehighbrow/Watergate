@@ -6612,7 +6612,7 @@ extern "C" void Player_OnTriggerEnter2D_m116 (Player_t1 * __this, Collider2D_t61
 		int32_t L_7 = (L_6->___score_5);
 		NullCheck(L_6);
 		L_6->___score_5 = ((int32_t)((int32_t)L_7+(int32_t)((int32_t)10)));
-		goto IL_01b8;
+		goto IL_01c3;
 	}
 
 IL_0038:
@@ -6635,7 +6635,7 @@ IL_0038:
 		NullCheck(L_12);
 		GameObject_t28 * L_13 = Component_get_gameObject_m258(L_12, /*hidden argument*/NULL);
 		Object_Destroy_m303(NULL /*static, unused*/, L_13, /*hidden argument*/NULL);
-		goto IL_01b8;
+		goto IL_01c3;
 	}
 
 IL_0068:
@@ -6647,7 +6647,7 @@ IL_0068:
 		bool L_16 = GameObject_CompareTag_m259(L_15, (String_t*) &_stringLiteral41, /*hidden argument*/NULL);
 		if (!L_16)
 		{
-			goto IL_0101;
+			goto IL_010c;
 		}
 	}
 	{
@@ -6664,7 +6664,7 @@ IL_0068:
 		bool L_22 = Animator_GetBool_m190(L_21, (String_t*) &_stringLiteral1, /*hidden argument*/NULL);
 		if (L_22)
 		{
-			goto IL_00fc;
+			goto IL_0107;
 		}
 	}
 	{
@@ -6673,7 +6673,7 @@ IL_0068:
 		bool L_24 = Animator_GetBool_m190(L_23, (String_t*) &_stringLiteral1, /*hidden argument*/NULL);
 		if (L_24)
 		{
-			goto IL_00fc;
+			goto IL_0107;
 		}
 	}
 	{
@@ -6690,7 +6690,7 @@ IL_0068:
 	{
 		Burglar_t2 * L_28 = V_0;
 		Player_KillBurglar_m115(__this, L_28, /*hidden argument*/NULL);
-		goto IL_00fc;
+		goto IL_0107;
 	}
 
 IL_00d4:
@@ -6707,79 +6707,86 @@ IL_00d4:
 		Animator_SetBool_m193(L_30, (String_t*) &_stringLiteral1, 1, /*hidden argument*/NULL);
 		Burglar_t2 * L_31 = V_0;
 		Player_KillBurglar_m115(__this, L_31, /*hidden argument*/NULL);
-		goto IL_00fc;
+		goto IL_0107;
 	}
 
 IL_00fc:
 	{
-		goto IL_01b8;
+		LevelManager_t36 * L_32 = (((Person_t3 *)__this)->___levelManager_6);
+		NullCheck(L_32);
+		LevelManager_Die_m80(L_32, /*hidden argument*/NULL);
 	}
 
-IL_0101:
+IL_0107:
 	{
-		Collider2D_t61 * L_32 = ___col;
-		NullCheck(L_32);
-		GameObject_t28 * L_33 = Component_get_gameObject_m258(L_32, /*hidden argument*/NULL);
+		goto IL_01c3;
+	}
+
+IL_010c:
+	{
+		Collider2D_t61 * L_33 = ___col;
 		NullCheck(L_33);
-		bool L_34 = GameObject_CompareTag_m259(L_33, (String_t*) &_stringLiteral28, /*hidden argument*/NULL);
-		if (!L_34)
+		GameObject_t28 * L_34 = Component_get_gameObject_m258(L_33, /*hidden argument*/NULL);
+		NullCheck(L_34);
+		bool L_35 = GameObject_CompareTag_m259(L_34, (String_t*) &_stringLiteral28, /*hidden argument*/NULL);
+		if (!L_35)
 		{
-			goto IL_01b8;
+			goto IL_01c3;
 		}
 	}
 	{
-		bool L_35 = (__this->___isDeepThroat_14);
-		if (L_35)
+		bool L_36 = (__this->___isDeepThroat_14);
+		if (L_36)
 		{
-			goto IL_01b8;
+			goto IL_01c3;
 		}
 	}
 	{
-		GameObject_t28 * L_36 = (__this->___deepThroatPrefab_15);
-		Transform_t66 * L_37 = Component_get_transform_m197(__this, /*hidden argument*/NULL);
-		NullCheck(L_37);
-		Vector3_t58  L_38 = Transform_get_position_m198(L_37, /*hidden argument*/NULL);
-		Quaternion_t99  L_39 = Quaternion_get_identity_m338(NULL /*static, unused*/, /*hidden argument*/NULL);
-		Object_t67 * L_40 = Object_Instantiate_m339(NULL /*static, unused*/, L_36, L_38, L_39, /*hidden argument*/NULL);
-		NullCheck(((GameObject_t28 *)Castclass(L_40, GameObject_t28_il2cpp_TypeInfo_var)));
-		Player_t1 * L_41 = GameObject_GetComponent_TisPlayer_t1_m337(((GameObject_t28 *)Castclass(L_40, GameObject_t28_il2cpp_TypeInfo_var)), /*hidden argument*/GameObject_GetComponent_TisPlayer_t1_m337_MethodInfo_var);
-		V_1 = L_41;
-		Player_t1 * L_42 = V_1;
-		Vector2_t38  L_43 = (((Person_t3 *)__this)->___destination_4);
-		Vector2_t38  L_44 = (((Person_t3 *)__this)->___direction_3);
-		Vector2_t38  L_45 = Vector2_op_Subtraction_m323(NULL /*static, unused*/, L_43, L_44, /*hidden argument*/NULL);
-		NullCheck(L_42);
-		((Person_t3 *)L_42)->___destination_4 = L_45;
-		Player_t1 * L_46 = V_1;
-		Vector2_t38  L_47 = (((Person_t3 *)__this)->___direction_3);
-		Vector2_t38  L_48 = Vector2_op_UnaryNegation_m325(NULL /*static, unused*/, L_47, /*hidden argument*/NULL);
-		NullCheck(L_46);
-		((Person_t3 *)L_46)->___direction_3 = L_48;
-		Player_t1 * L_49 = V_1;
-		Vector2_t38  L_50 = (((Person_t3 *)__this)->___destination_4);
-		NullCheck(L_49);
-		((Person_t3 *)L_49)->___startPosition_5 = L_50;
-		LevelManager_t36 * L_51 = (((Person_t3 *)__this)->___levelManager_6);
-		NullCheck(L_51);
-		List_1_t29 * L_52 = (L_51->___players_5);
-		Player_t1 * L_53 = V_1;
+		GameObject_t28 * L_37 = (__this->___deepThroatPrefab_15);
+		Transform_t66 * L_38 = Component_get_transform_m197(__this, /*hidden argument*/NULL);
+		NullCheck(L_38);
+		Vector3_t58  L_39 = Transform_get_position_m198(L_38, /*hidden argument*/NULL);
+		Quaternion_t99  L_40 = Quaternion_get_identity_m338(NULL /*static, unused*/, /*hidden argument*/NULL);
+		Object_t67 * L_41 = Object_Instantiate_m339(NULL /*static, unused*/, L_37, L_39, L_40, /*hidden argument*/NULL);
+		NullCheck(((GameObject_t28 *)Castclass(L_41, GameObject_t28_il2cpp_TypeInfo_var)));
+		Player_t1 * L_42 = GameObject_GetComponent_TisPlayer_t1_m337(((GameObject_t28 *)Castclass(L_41, GameObject_t28_il2cpp_TypeInfo_var)), /*hidden argument*/GameObject_GetComponent_TisPlayer_t1_m337_MethodInfo_var);
+		V_1 = L_42;
+		Player_t1 * L_43 = V_1;
+		Vector2_t38  L_44 = (((Person_t3 *)__this)->___destination_4);
+		Vector2_t38  L_45 = (((Person_t3 *)__this)->___direction_3);
+		Vector2_t38  L_46 = Vector2_op_Subtraction_m323(NULL /*static, unused*/, L_44, L_45, /*hidden argument*/NULL);
+		NullCheck(L_43);
+		((Person_t3 *)L_43)->___destination_4 = L_46;
+		Player_t1 * L_47 = V_1;
+		Vector2_t38  L_48 = (((Person_t3 *)__this)->___direction_3);
+		Vector2_t38  L_49 = Vector2_op_UnaryNegation_m325(NULL /*static, unused*/, L_48, /*hidden argument*/NULL);
+		NullCheck(L_47);
+		((Person_t3 *)L_47)->___direction_3 = L_49;
+		Player_t1 * L_50 = V_1;
+		Vector2_t38  L_51 = (((Person_t3 *)__this)->___destination_4);
+		NullCheck(L_50);
+		((Person_t3 *)L_50)->___startPosition_5 = L_51;
+		LevelManager_t36 * L_52 = (((Person_t3 *)__this)->___levelManager_6);
 		NullCheck(L_52);
-		VirtActionInvoker1< Player_t1 * >::Invoke(22 /* System.Void System.Collections.Generic.List`1<Player>::Add(!0) */, L_52, L_53);
+		List_1_t29 * L_53 = (L_52->___players_5);
+		Player_t1 * L_54 = V_1;
+		NullCheck(L_53);
+		VirtActionInvoker1< Player_t1 * >::Invoke(22 /* System.Void System.Collections.Generic.List`1<Player>::Add(!0) */, L_53, L_54);
 		Player_ScoreNotif_m114(__this, ((int32_t)500), /*hidden argument*/NULL);
 		IL2CPP_RUNTIME_CLASS_INIT(Singleton_1_t20_il2cpp_TypeInfo_var);
-		GameSingleton_t19 * L_54 = Singleton_1_get_Instance_m200(NULL /*static, unused*/, /*hidden argument*/Singleton_1_get_Instance_m200_MethodInfo_var);
-		GameSingleton_t19 * L_55 = L_54;
-		NullCheck(L_55);
-		int32_t L_56 = (L_55->___score_5);
-		NullCheck(L_55);
-		L_55->___score_5 = ((int32_t)((int32_t)L_56+(int32_t)((int32_t)500)));
-		Collider2D_t61 * L_57 = ___col;
-		NullCheck(L_57);
-		GameObject_t28 * L_58 = Component_get_gameObject_m258(L_57, /*hidden argument*/NULL);
-		Object_Destroy_m303(NULL /*static, unused*/, L_58, /*hidden argument*/NULL);
+		GameSingleton_t19 * L_55 = Singleton_1_get_Instance_m200(NULL /*static, unused*/, /*hidden argument*/Singleton_1_get_Instance_m200_MethodInfo_var);
+		GameSingleton_t19 * L_56 = L_55;
+		NullCheck(L_56);
+		int32_t L_57 = (L_56->___score_5);
+		NullCheck(L_56);
+		L_56->___score_5 = ((int32_t)((int32_t)L_57+(int32_t)((int32_t)500)));
+		Collider2D_t61 * L_58 = ___col;
+		NullCheck(L_58);
+		GameObject_t28 * L_59 = Component_get_gameObject_m258(L_58, /*hidden argument*/NULL);
+		Object_Destroy_m303(NULL /*static, unused*/, L_59, /*hidden argument*/NULL);
 	}
 
-IL_01b8:
+IL_01c3:
 	{
 		return;
 	}

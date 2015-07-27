@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a41c95775aa484e4da452d495f355b3f
-timeCreated: 1432656832
+timeCreated: 1437958828
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -59,70 +59,70 @@ TextureImporter:
     - name: walls2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 26
-        width: 6
-        height: 6
+        x: 2
+        y: 17
+        width: 8
+        height: 10
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_1
       rect:
         serializedVersion: 2
-        x: 6
-        y: 18
-        width: 6
-        height: 14
+        x: 12
+        y: 14
+        width: 8
+        height: 16
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_2
       rect:
         serializedVersion: 2
-        x: 12
-        y: 12
-        width: 6
-        height: 20
+        x: 24
+        y: 22
+        width: 5
+        height: 10
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_3
       rect:
         serializedVersion: 2
-        x: 18
-        y: 26
-        width: 6
-        height: 6
+        x: 1
+        y: 1
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_4
       rect:
         serializedVersion: 2
-        x: 24
-        y: 26
-        width: 6
-        height: 6
+        x: 21
+        y: 10
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_5
       rect:
         serializedVersion: 2
-        x: 18
-        y: 20
-        width: 6
-        height: 6
+        x: 11
+        y: 1
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_6
       rect:
         serializedVersion: 2
-        x: 24
-        y: 20
-        width: 6
-        height: 6
+        x: 21
+        y: 1
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
