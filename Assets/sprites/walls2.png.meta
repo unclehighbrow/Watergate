@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a41c95775aa484e4da452d495f355b3f
-timeCreated: 1437959952
+timeCreated: 1437960535
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -59,8 +59,8 @@ TextureImporter:
     - name: walls2_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 17
+        x: 4
+        y: 51
         width: 10
         height: 10
       alignment: 0
@@ -69,9 +69,9 @@ TextureImporter:
     - name: walls2_1
       rect:
         serializedVersion: 2
-        x: 11
-        y: 14
-        width: 10
+        x: 26
+        y: 44
+        width: 12
         height: 16
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -89,40 +89,40 @@ TextureImporter:
     - name: walls2_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 10
-        height: 10
+        x: 2
+        y: 22
+        width: 12
+        height: 12
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_4
       rect:
         serializedVersion: 2
-        x: 21
-        y: 10
-        width: 8
-        height: 8
+        x: 45
+        y: 49
+        width: 12
+        height: 12
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_5
       rect:
         serializedVersion: 2
-        x: 10
-        y: 0
-        width: 10
-        height: 10
+        x: 27
+        y: 5
+        width: 12
+        height: 12
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: walls2_6
       rect:
         serializedVersion: 2
-        x: 20
-        y: 0
-        width: 10
-        height: 10
+        x: 45
+        y: 20
+        width: 12
+        height: 12
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
