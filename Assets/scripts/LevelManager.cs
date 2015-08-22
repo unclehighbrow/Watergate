@@ -151,7 +151,7 @@ public class LevelManager : MonoBehaviour {
 
 	public void StartScareMode() {
 		scareMode = true;
-		timer = GameSingleton.Instance.scareTimer;
+		timer += GameSingleton.Instance.scareTimer;
 		foreach (Burglar burglar in burglars) {
 			burglar.StartScareMode();
 		}
@@ -163,6 +163,7 @@ public class LevelManager : MonoBehaviour {
 			burglar.EndScareMode();
 		}
 		burglarsEatenInScareMode = 0;
+		timer = 0;
 	}
 
 	public void RectifyLifeUis() {

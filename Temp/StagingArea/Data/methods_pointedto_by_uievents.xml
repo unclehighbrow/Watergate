@@ -1,8 +1,0 @@
-<linker>
-	<assembly fullname="Assembly-CSharp">
-		<type fullname="GameOver">
-			<method name="ShowLeaderboardUI"/>
-			<method name="TryAgain"/>
-		</type>
-	</assembly>
-</linker>
