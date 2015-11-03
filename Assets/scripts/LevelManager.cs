@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+[RequireComponent (typeof (AudioSource))]
 public class LevelManager : MonoBehaviour {
 	GameObject pelletHolder = null;
 	public bool scareMode = false;
@@ -22,6 +23,12 @@ public class LevelManager : MonoBehaviour {
 	public int gridSizeY;
 	private bool _levelStarted = false;
 
+	AudioSource audioSource;
+	public AudioClip powerPelletSound;
+	public AudioClip ticSound;
+	public AudioClip tocSound;
+	AudioSource music;
+	
 	public List<float> cameraSizes = new List<float>();
 	static List<float> screenRatios = new List<float> {3f/2f, 16f/9f, 4f/3f};
 	//													1.5  1.77 1.33
@@ -98,20 +105,28 @@ public class LevelManager : MonoBehaviour {
 			GameObject.Find("pause_button").GetComponent<Button>().onClick.AddListener(()=>Pause());
 			SetFlowerpotTimer();
 			RectifyLifeUis();
+			music = GameObject.Find("Level Music").GetComponent<AudioSource>();
+			audioSource = GetComponent<AudioSource>();
 		}
      }
 
 	void FlashBurglars() {
 		if (Mathf.FloorToInt(timer * 10) % 6 == 0) {
-			foreach (Burglar burglar in burglars) {
-				if (burglar.GetComponent<Animator>().GetBool("scare")) {
-					burglar.GetComponent<SpriteRenderer>().color = Color.white;
-				}
+			if (!audioSource.isPlaying) {
+				audioSource.PlayOneShot(ticSound);
 			}
-		} else if (Mathf.FloorToInt(timer * 10) % 6 == 3) {
 			foreach (Burglar burglar in burglars) {
 				if (burglar.GetComponent<Animator>().GetBool("scare")) {
 					burglar.GetComponent<SpriteRenderer>().color = burglar.spriteColor;
+				}
+			}
+		} else if (Mathf.FloorToInt(timer * 10) % 6 == 3) {
+			if (!audioSource.isPlaying) {
+				audioSource.PlayOneShot(tocSound);
+			}
+			foreach (Burglar burglar in burglars) {
+				if (burglar.GetComponent<Animator>().GetBool("scare")) {
+					burglar.GetComponent<SpriteRenderer>().color = Color.white;
 				}
 			}
 		}
@@ -152,6 +167,8 @@ public class LevelManager : MonoBehaviour {
 	public void StartScareMode() {
 		scareMode = true;
 		timer += GameSingleton.Instance.scareTimer;
+		music.Stop();
+		audioSource.PlayOneShot(powerPelletSound);
 		foreach (Burglar burglar in burglars) {
 			burglar.StartScareMode();
 		}
@@ -164,6 +181,9 @@ public class LevelManager : MonoBehaviour {
 		}
 		burglarsEatenInScareMode = 0;
 		timer = 0;
+		if (!music.isPlaying) {
+			music.Play();
+		}
 	}
 
 	public void RectifyLifeUis() {
@@ -180,10 +200,11 @@ public class LevelManager : MonoBehaviour {
 		if (GameSingleton.Instance.lives <= 0) {
 			GameSingleton.Instance.GameOver();
 		} else {
-			burglarsEatenInScareMode = 0;
-
+			EndScareMode();
+			if (!music.isPlaying) {
+				music.Play ();
+			}
 			foreach (Burglar burglar in burglars) {
-				burglar.EndScareMode();
 				burglar.Undie();
 				burglar.Reset();
 			}
@@ -202,6 +223,7 @@ public class LevelManager : MonoBehaviour {
 			}
 			SetFlowerpotTimer();
 		}
+
 	}
 
 	public void Die() {

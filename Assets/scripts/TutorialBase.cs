@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-
+[RequireComponent (typeof(AudioSource))]
 public class TutorialBase : MonoBehaviour {
 
 	public Text uiText;
@@ -31,8 +31,10 @@ public class TutorialBase : MonoBehaviour {
 
 	protected int Line = 0;
 
-	public void Start() {
+	AudioSource audioSource;
 
+	public void Start() {
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	public void Update() {
@@ -98,6 +100,8 @@ public class TutorialBase : MonoBehaviour {
 				
 				foreach (char letter in word) {
 					uiText.text += letter;
+					audioSource.pitch = Random.Range(1f,1.8f);
+					audioSource.Play();
 					yield return new WaitForSeconds(writingDelay);
 				}
 				

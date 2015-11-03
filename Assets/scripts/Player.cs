@@ -9,6 +9,17 @@ public class Player : Person {
 	public GameObject scoreNotifPrefab;
 	public float maxIdleTime = 5;
 	public float idleTime = 0;
+	
+	public AudioClip pelletSound;
+	public AudioClip dyingSound;
+	public AudioClip flowerPotSound;
+	public AudioClip burglarDyingSound;
+	AudioSource audioSource;
+
+	public new void Start() {
+		base.Start();
+		audioSource = GetComponent<AudioSource>();
+	}
 
 	void Update() {
 		if (levelManager.LevelStarted) {
@@ -91,12 +102,14 @@ public class Player : Person {
 		ScoreNotif(bonus);
 		GameSingleton.Instance.score += bonus;
 		levelManager.burglarsEatenInScareMode++;
+		audioSource.PlayOneShot(burglarDyingSound);
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.gameObject.CompareTag("pellet")) {
 			Destroy(col.gameObject);
 			GameSingleton.Instance.score += 10;
+			audioSource.PlayOneShot(pelletSound);
 		} else if (col.gameObject.CompareTag("power_pellet")) {
 			levelManager.StartScareMode();
 			Destroy(col.gameObject);
@@ -108,7 +121,9 @@ public class Player : Person {
 				} else if (isDeepThroat) {
 					animator.SetBool("dead", true);
 					KillBurglar(burglar);
+					audioSource.PlayOneShot(dyingSound);
 				} else {
+					audioSource.PlayOneShot(dyingSound);
 					levelManager.Die();
 				}
 			}
@@ -120,6 +135,7 @@ public class Player : Person {
 			levelManager.players.Add(newDeepThroat);
 			ScoreNotif(500);
 			GameSingleton.Instance.score += 500;
+			audioSource.PlayOneShot(flowerPotSound);
 			Destroy(col.gameObject);
 		}
 	}

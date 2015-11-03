@@ -7,8 +7,12 @@ public class GameOver : MonoBehaviour {
 	public SpriteRenderer Nixon;
 	public SpriteRenderer LeftHand;
 	public SpriteRenderer RightHand;
+	AudioSource audioSource;
+	public AudioClip nixonLaugh;
+	public AudioClip rap;
 
 	void Start() {
+		audioSource = GetComponent<AudioSource>();
 		GameObject.Find("score").GetComponent<Text>().text = GameSingleton.Instance.score.ToString().PadLeft(5, '0');
 		if (GameSingleton.Instance.RecordScore()) {
 			HighScore = GameObject.Find("high_score").GetComponent<Text>();
@@ -16,6 +20,9 @@ public class GameOver : MonoBehaviour {
 			LeftHand = GameObject.Find ("left_hand").GetComponent<SpriteRenderer>();
 			RightHand = GameObject.Find ("right_hand").GetComponent<SpriteRenderer>();
 			StartCoroutine("FadeInHighScore");
+			audioSource.PlayOneShot(rap);
+		} else {
+			audioSource.PlayOneShot(nixonLaugh);
 		}
 	}
 
@@ -41,6 +48,7 @@ public class GameOver : MonoBehaviour {
 	public void TryAgain() {
 		GameSingleton.Instance.playerSpeed = 1f;
 		GameSingleton.Instance.burglarSpeed = 1f;
+		GameSingleton.Instance.scareTimer = 10f;
 		GameSingleton.Instance.LoadLevel("level1");
 	}
 }

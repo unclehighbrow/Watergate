@@ -18,12 +18,12 @@ public class WatergateControl : MonoBehaviour {
 
 #if UNITY_EDITOR
 		// mouse
-		if (Input.GetMouseButtonDown(0)) {
-			firstMousePosition = Input.mousePosition;
-		}
-		if (Input.GetMouseButtonUp(0)) {
-			performMove(firstMousePosition, Input.mousePosition);
-		}
+//		if (Input.GetMouseButtonDown(0)) {
+//			firstMousePosition = Input.mousePosition;
+//		}
+//		if (Input.GetMouseButtonUp(0)) {
+//			performMove(firstMousePosition, Input.mousePosition);
+//		}
 		
 		if (Input.GetKeyDown("a")) {
 			levelManager.players[0].applyDirection(-Vector2.right);
@@ -51,10 +51,13 @@ public class WatergateControl : MonoBehaviour {
 			Touch touch = touches[i];
 			if (touch.phase == TouchPhase.Began) {
 				touchMap[touch.fingerId] = touch.position;
-			} else if (touch.phase == TouchPhase.Moved && touchMap.ContainsKey(touch.fingerId)) {
+			} else if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Ended) && touchMap.ContainsKey(touch.fingerId)) {
 				Vector2 firstTouch = (Vector2) touchMap[touch.fingerId];
-				performMove(firstTouch, touch.position);
-				touchMap.Remove(touch.fingerId);
+				float distance = Vector2.Distance(firstTouch, touch.position);
+				if (distance > 10) {
+					performMove(firstTouch, touch.position);
+					touchMap.Remove(touch.fingerId);
+				} 
 			}
 		}
 
