@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 
 
@@ -42,12 +44,19 @@ public class GameSingleton : Singleton<GameSingleton> {
 	}
 
 	public void Start() {
+#if UNITY_ANDROID
+		PlayGamesPlatform.DebugLogEnabled = true;
+		PlayGamesPlatform.Activate();
+#endif
 		highScore = PlayerPrefs.GetInt("highScore", 0);
+		Debug.Log ("about to authenticate");
 		Social.localUser.Authenticate(ProcessAuthentication);
+		Debug.Log ("done with authentication");
 	}
 
 	void ProcessAuthentication (bool success) {
 		if (success) {
+			Debug.Log ("successfully logged in");
 			loggedIn = true;
 		} else {
 			Debug.Log ("Failed to authenticate");
@@ -78,9 +87,16 @@ public class GameSingleton : Singleton<GameSingleton> {
 			PlayerPrefs.SetInt("highScore", score);
 		}
 		if (loggedIn) {
+#if UNITY_IOS
 			Social.ReportScore (score, leaderboard, success => {
 				Debug.Log(success ? "Reported score successfully" : "Failed to report score");
 			});
+#endif
+#if UNITY_ANDROID
+			Social.ReportScore (score, Constants.leaderboard_watergatedefault, success => {
+				Debug.Log(success ? "Reported score successfully" : "Failed to report score");
+			});
+#endif
 		}
 		return ret;
 	}
@@ -92,6 +108,18 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public void LoadNextLevel() {
 		justBeatTheGame = false;
 		int levelToLoad = (stashedLevel >= 0 ? stashedLevel : Application.loadedLevel) + 1;
+
+#if UNITY_ANDROID
+		if (Application.loadedLevelName == "level1") {
+			CompleteAchievement(Constants.achievement_beat_the_first_level);
+		} else if (Application.loadedLevelName == "level2") {
+			CompleteAchievement(Constants.achievement_beat_the_second_level);
+		} else if (Application.loadedLevelName == "level3") {
+			CompleteAchievement(Constants.achievement_beat_the_third_level);
+		} else if (Application.loadedLevelName == "level4") {
+			CompleteAchievement(Constants.achievement_beat_the_game);
+		}
+#endif
 
 		if (PlayerPrefs.GetInt("seenTutorial") == 1) {
 			Application.LoadLevel("tutorial2");
@@ -113,6 +141,14 @@ public class GameSingleton : Singleton<GameSingleton> {
 		}
 	}
 
+	public void CompleteAchievement(string achievement) {
+#if UNITY_ANDROID
+		Social.ReportProgress(achievement, 100.0f, (bool success) => {
+			Debug.Log ("reporting achievement: " + success);
+		});
+#endif
+	}
+	
 	public void GameOver() {
 		stashedLevel = -1;
 		Application.LoadLevel("game_over");
@@ -121,6 +157,7 @@ public class GameSingleton : Singleton<GameSingleton> {
 	public void LoadLevel(string level) {
 		this.lives = 3;
 		this.score = 0;
+		CompleteAchievement(Constants.achievement_started_the_game);
 		Application.LoadLevel(level);
 	}
 }
